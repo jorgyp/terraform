@@ -1,0 +1,6 @@
+.DS_Store
+**/.ssh/**
+id_rsa**
+**/.terraform/**
+terraform.tfstate
+lock.json
