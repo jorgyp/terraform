@@ -19,10 +19,10 @@
 ## Usecase
 
 >
-- deploy infrastucture in Azure cloud declaratively
+- deploy infrastucture (i.e. AKS cluster) in Azure cloud declaratively
 - maintain a balance of not repeating unnecessary code but also avoid overcomplicating deploy templates due to extreme modularity.
-- deploy and manage multiple environments from same repository
-- ensure identical mirroring of infrastructure between regardless of environments
+- easily manage multiple environments from same repository
+- be able to copy/mirror infrastructure quickly between environments
 
 
 ## Folder_structure  
