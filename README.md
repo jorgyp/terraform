@@ -93,10 +93,11 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 
 ><b>Background:</b> Launch infrastructure, config management, and k8s deployments by utilizing pull technology tools (terradiff, kubediff, and ansiblediff) instead of push code to cluster. To learn why this is a cool check out: <url> https://www.weave.works/technologies/gitops/ </url><br>
 
-><b>Scenario:</b> AKS cluster is running, you don't want to manage the Continuos Deployment work and would like to take advantage of gitOps along with other neat features. 
+><b>Scenario:</b> AKS cluster is running, you don't want to manage the Continuos Deployment work and would like to take advantage of GitOps. 
 
 1. Change into the scripts directory and run "bash gitops_deploy.sh" to install GitOps operator called flux the cluster. 
 2. Follow instructions to validate gitops "git push" functions as expected. 
 
+Full instructions here: https://eksworkshop.com/weave_flux/
 
 
