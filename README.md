@@ -15,14 +15,15 @@
 >
 - Azure cli
 - Terraform 1.12.0+
+- Helm 3+ on workstation
 
 ## Usecase
 
 >
-- deploy infrastucture (i.e. AKS cluster) in Azure cloud declaratively
+- deploy infrastucture in Azure cloud declaratively
 - maintain a balance of not repeating unnecessary code but also avoid overcomplicating deploy templates due to extreme modularity.
-- easily manage multiple environments from same repository
-- be able to copy/mirror infrastructure quickly between environments
+- deploy and manage multiple environments from same repository
+- ensure identical mirroring of infrastructure between regardless of environments
 
 
 ## Folder_structure  
@@ -90,8 +91,12 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 
 ## GitOps
 
-><b>Background:</b> Launch infrastructure, config management, and k8s deployments by utilizing pull technology tools (terradiff, kubediff, and ansiblediff) instead of push code to cluster <br>
->
-Resource: <url> https://www.weave.works/technologies/gitops/ </url>
+><b>Background:</b> Launch infrastructure, config management, and k8s deployments by utilizing pull technology tools (terradiff, kubediff, and ansiblediff) instead of push code to cluster. To learn why this is a cool check out: <url> https://www.weave.works/technologies/gitops/ </url><br>
+
+><b>Scenario:</b> AKS cluster is running, you don't want to manage the Continuos Deployment work and would like to take advantage of gitOps along with other neat features. 
+
+1. Change into the scripts directory and run "bash gitops_deploy.sh" to install GitOps operator called flux the cluster. 
+2. Follow instructions to validate gitops "git push" functions as expected. 
+
 
 
