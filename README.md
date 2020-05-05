@@ -95,7 +95,7 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 
 ><b>Scenario:</b> AKS cluster is running, you don't want to manage the Continuos Deployment work and would like to take advantage of GitOps. 
 
-1. Change into the scripts directory and run "bash gitops_deploy.sh" to install GitOps operator called flux the cluster. 
+1. Change into the scripts directory and run "bash gitops_deploy.sh" to install Weave's GitOps operator called Flux on the cluster. 
 2. Follow instructions to validate gitops "git push" functions as expected. 
 
 Full instructions here: https://eksworkshop.com/weave_flux/
