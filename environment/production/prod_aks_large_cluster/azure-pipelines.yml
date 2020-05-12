@@ -41,8 +41,8 @@ stages:
             sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/main.tf"
             sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/main.tf"
             sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_client_id}|$(AKS_CLIENT_ID)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_client_secret}|$(AKS_CLIENT_SECRET)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_client_id}|$(azureClientId)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/main.tf"
             env:
               SOURCE: $(source)
               AKS_K8S_VERSION: $(aksK8sVersion)
