@@ -8,16 +8,16 @@ terraform {
 }
 
 module "aks" {
-    source                    = "../../../modules/aks/"
-    aks_k8s_version           = "1.16.7"
-    aks_location              = "West US 2"
-    aks_resource_group_name   = "aks-production-manage-rg"
-    aks_cluster_name          = "aks-production-manage"
-    aks_node_count            = 2
-    aks_dns_prefix            = "aks-production"
-    aks_admin_username        = "sergeyago"
-    aks_client_id             = "clientId"
-    aks_client_secret         = "clientSecret"
+    source                    = "${source}"
+    aks_k8s_version           = "${aksK8sVersion}"
+    aks_location              = "${aksLocation}"
+    aks_resource_group_name   = "${aksResourceGroupName}"
+    aks_cluster_name          = "${aksClusterName}"
+    aks_node_count            = "${aksNodeCount}"
+    aks_dns_prefix            = "${aks_dns_prefix}"
+    aks_admin_username        = "${aks_admin_username}"
+    aks_client_id             = "${aks_client_id}"
+    aks_client_secret         = "${aks_client_secret}"
 }
 
 output "kube_config_prod" {

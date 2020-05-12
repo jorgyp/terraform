@@ -1,0 +1,93 @@
+trigger: none
+
+variables:
+#View adoCrednetials vars in ADO library
+- group: adoCredentials
+- name: source
+  value: "../../../modules/aks/"
+- name: aks_k8s_version
+  value: "1.16.7"
+- name: aks_location
+  value: "West US 2" 
+- name: aks_resource_group_name
+  value: "aks-production-manage-rg"
+- name: aks_cluster_name
+  value: "aks-production-manage"
+- name: aks_node_count
+  value: 2
+- name: aks_dns_prefix
+  value: aks-production-manage
+- name: aks_admin_username
+  value: "sergeyago"
+
+resources:
+  - repo: self
+
+stages: 
+  - stage: inject
+    condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'deploy'))
+    displayName: inject variables into manifest file (main.tf)
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            sed -i -e "s|\${source}|$SOURCE|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURECE_GROUP_NAME)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_cluster_name}|$(AKS_CLUSTER_NAME)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_client_id}|$(AKS_CLIENT_ID)|g" "$(Pipeline.Workspace)/main.tf"
+            sed -i -e "s|\${aks_client_secret}|$(AKS_CLIENT_SECRET)|g" "$(Pipeline.Workspace)/main.tf"
+            env:
+              SOURCE: $(source)
+              AKS_K8S_VERSION: $(aksK8sVersion)
+              AKS_LOCATION: $(aksLocation)
+              AKS_RESOURECE_GROUP_NAME: $(aksResourceGroupName)
+              AKS_CLUSTER_NAME: $(aks_cluster_name)
+              AKS_NODE_COUNT: $(aks_node_count)
+              AKS_DNS_PREFIX: $(aks_dns_prefix)
+              AKS_ADMIN_USERNAME: $(aks_admin_username)
+              AKS_CLIENT_ID: $(azureClientId)
+              AKS_CLIENT_SECRET: $(azureClientSecret)
+            cat "$(Pipeline.Workspace)/main.tf"
+  - stage: init
+    dependsOn: inject
+    displayName: init terraform
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            terraform init
+
+  - stage: apply
+    dependsOn: init
+    condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'deploy'))
+    displayName: apply terraform
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            terraform apply -auto-approve
+            
+  - stage: destroy
+    dependsOn: init
+    condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
+    displayName: destroy terraform
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            terraform destroy -auto-approve
+
+
