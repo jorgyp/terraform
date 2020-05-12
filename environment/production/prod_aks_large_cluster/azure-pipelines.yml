@@ -19,6 +19,8 @@ variables:
   value: aks-production-manage
 - name: aks_admin_username
   value: "sergeyago"
+- name: terraform_task
+  value: "deploy"
 
 resources:
   - repo: self
