@@ -27,7 +27,6 @@ resources:
 
 stages: 
   - stage: inject
-    condition: and(always(), eq('$(terraform_task))', 'deploy'))
     displayName: inject variables into manifest file (main.tf)
     jobs:
     - job: 
@@ -82,7 +81,6 @@ stages:
 
   - stage: destroy
     dependsOn: init
-    condition: and(always(), eq('$(terraform_task)', 'destroy'))
     displayName: destroy terraform
     jobs:
     - job: 
