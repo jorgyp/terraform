@@ -19,7 +19,6 @@ variables:
   value: aks-production-manage
 - name: aks_admin_username
   value: "sergeyago"
-- name: 
 
 resources:
   - repo: self
