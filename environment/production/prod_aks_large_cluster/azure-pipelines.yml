@@ -36,7 +36,8 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            ls "$(Pipeline.Workspace)/s/"
+            ls "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/
+            cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${source}|$SOURCE|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
@@ -47,6 +48,7 @@ stages:
             sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_client_id}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             env:
               SOURCE: $(source)
               AKS_K8S_VERSION: $(aksK8sVersion)
