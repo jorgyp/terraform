@@ -36,16 +36,17 @@ stages:
         - script: |
             echo "$(Pipeline.Workspace)"
             ls "$(Pipeline.Workspace)"
-            sed -i -e "s|\${source}|$SOURCE|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURECE_GROUP_NAME)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_cluster_name}|$(AKS_CLUSTER_NAME)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_client_id}|$(azureClientId)|g" "$(Pipeline.Workspace)/main.tf"
-            sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/main.tf"
+            ls "$(Pipeline.Workspace)/s/"
+            sed -i -e "s|\${source}|$SOURCE|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURECE_GROUP_NAME)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_cluster_name}|$(AKS_CLUSTER_NAME)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_client_id}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/main.tf"
+            sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/s/main.tf"
             env:
               SOURCE: $(source)
               AKS_K8S_VERSION: $(aksK8sVersion)
@@ -57,7 +58,6 @@ stages:
               AKS_ADMIN_USERNAME: $(aks_admin_username)
               AKS_CLIENT_ID: $(azureClientId)
               AKS_CLIENT_SECRET: $(azureClientSecret)
-            cat "$(Pipeline.Workspace)/main.tf"
   - stage: init
     dependsOn: inject
     displayName: init terraform
