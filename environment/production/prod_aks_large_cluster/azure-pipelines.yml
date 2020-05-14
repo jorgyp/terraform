@@ -48,6 +48,13 @@ stages:
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksClientId}|$(aks_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksClientSecret}|$(aks_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf'
+            Contents: '**'
+            TargetFolder: '$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf'
+
+
   - stage: init
     dependsOn: inject
     displayName: init terraform
