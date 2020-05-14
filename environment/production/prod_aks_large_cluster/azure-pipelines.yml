@@ -61,3 +61,9 @@ stages:
             targetType: inline
             workingDirectory: 'environment/$(environment)/$(module_manifest_name)'
             script: 'terraform plan'
+        - task: Bash@3 
+          displayName: 'Terraform Apply'
+          inputs:
+            targetType: inline
+            workingDirectory: 'environment/$(environment)/$(module_manifest_name)'
+            script: 'terraform apply'
