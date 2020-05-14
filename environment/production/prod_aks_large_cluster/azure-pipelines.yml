@@ -19,12 +19,15 @@ variables:
   value: aks-production-manage
 - name: aks_admin_username
   value: "sergeyago"
-- name: terraform_task
-  value: "deploy"
 - name: module_manifest_name
   value: "prod_aks_large_cluster"
 - name: environment 
   value: "production"
+
+parameters:
+- name: terraform_task
+  type: string
+  default: 'deploy'
 
 resources:
   - repo: self
