@@ -2,12 +2,6 @@ trigger:
   branches:
     include:
     - master
-  paths:
-    include:
-    - environment/production/prod_aks_large_cluster/*
-    exclude:
-    - readme.md
-    - .gitignore  
 
 variables:
 #View adoCrednetials vars in ADO library
