@@ -83,7 +83,7 @@ stages:
 
         - task: Bash@3 
           displayName: 'Terraform Destroy'
-          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
+          condition: eq('${{ parameters.terraform_task }}', 'destroy'))
           inputs:
             targetType: inline
             workingDirectory: 'environment/$(environment)/$(module_manifest_name)'
