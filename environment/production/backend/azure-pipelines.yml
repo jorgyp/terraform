@@ -1,0 +1,69 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - environment/production/backend/azure-pipelines.yml
+    exclude:
+    - readme.md
+    - .gitignore  
+
+variables:
+#View adoCrednetials vars in ADO library
+- group: backendVariables
+- name: module_manifest_location
+  value: "prod_aks_large_cluster"
+
+parameters:
+- name: terraform_task
+  type: string
+  default: 'deploy'
+
+resources:
+  - repo: self
+
+stages: 
+  - stage: deploy
+    displayName: inject variables into manifest file (main.tf)
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${location}|$(location)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${accountTier}|$(account_tier)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageContainer}|$(storage_container)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageContainerType}|$(storage_container_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+        - task: Bash@3 
+          displayName: 'Terraform Init'
+          inputs:
+            targetType: inline
+            workingDirectory: 'environment/$(environment)/$(module_manifest_location)'
+            script: 'terraform init'
+        - task: Bash@3 
+          displayName: 'Terraform Plan'
+          inputs:
+            targetType: inline
+            workingDirectory: 'environment/$(environment)/$(module_manifest_location)'
+            script: 'terraform plan'
+        - task: Bash@3 
+          displayName: 'Terraform Apply'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'deploy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'environment/$(environment)/$(module_manifest_location)'
+            script: 'terraform apply -auto-approve'
+
+        - task: Bash@3 
+          displayName: 'Terraform Destroy'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'environment/$(environment)/$(module_manifest_location)'
+            script: 'terraform destroy -auto-approve'
