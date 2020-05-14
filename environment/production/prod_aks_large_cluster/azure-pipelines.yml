@@ -38,28 +38,16 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            sed -i -e "s|\${source}|$(SOURCE)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURCE_GROUP_NAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_cluster_name}|$(AKS_CLUSTER_NAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_admin_username}|$(AKS_ADMIN_USERNAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_client_id}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            env:
-              SOURCE: $(source)
-              AKS_K8S_VERSION: $(aks_k8s_version)
-              AKS_LOCATION: $(aks_location)
-              AKS_RESOURECE_GROUP_NAME: $(aks_resource_group_name)
-              AKS_CLUSTER_NAME: $(aks_cluster_name)
-              AKS_NODE_COUNT: $(aks_node_count)
-              AKS_DNS_PREFIX: $(aks_dns_prefix)
-              AKS_ADMIN_USERNAME: $(aks_admin_username)
-              AKS_CLIENT_ID: $(azureClientId)
-              AKS_CLIENT_SECRET: $(azureClientSecret)
-              ENVIRONMENT: $(environment)
+            sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_k8s_version}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_location}|$(aks_location )|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_resource_group_name}|$(aks_resource_group_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_cluster_name}|$(aks_cluster_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_dns_prefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_admin_username}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_client_id}|$(aks_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_client_secret}|$(aks_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
   - stage: init
     dependsOn: inject
     displayName: init terraform
