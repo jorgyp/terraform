@@ -1,0 +1,51 @@
+trigger: none
+
+variables:
+#View adoCrednetials vars in ADO library
+- group: adoCredentials
+- name: repo
+  value: "git@github.com:jorgyp/test_api.git"
+
+parameters:
+- name: terraform_task
+  type: string
+  default: 'destroy'
+
+resources:
+  - repo: self
+
+stages: 
+  - stage: deploy
+    displayName: inject variables into manifest file (main.tf)
+    jobs:
+    - deployment: install_flux 
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: install_flux
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: |
+                kubectl apply -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
+                kubectl create ns flux
+                helm upgrade -i flux \
+                --set helmOperator.create=true \
+                --set helmOperator.createCRD=false \
+                --set git.url=$repo \
+                --namespace flux \
+                fluxcd/flux
+                sleep 60s
+
+    - deployment: install_flux 
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: install_flux
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - script: |
+                kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
+                echo "copy this key to git repository settings" && pause 30s
+  
