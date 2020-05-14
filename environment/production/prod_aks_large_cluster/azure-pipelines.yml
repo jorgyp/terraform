@@ -38,10 +38,10 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            sed -i -e "s|\${source}|$SOURCE|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${source}|$(SOURCE)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_k8s_version}|$(AKS_K8S_VERSION)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_location }|$(AKS_LOCATION )|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURECE_GROUP_NAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aks_resource_group_name}|$(AKS_RESOURCE_GROUP_NAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_cluster_name}|$(AKS_CLUSTER_NAME)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aks_dns_prefix}|$(AKS_DNS_PREFIX)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
@@ -50,9 +50,9 @@ stages:
             sed -i -e "s|\${aks_client_secret}|$(azureSecret)|g" "$(Pipeline.Workspace)/s/environment/$ENVIRONMENT/$(module_manifest_name)/main.tf"
             env:
               SOURCE: $(source)
-              AKS_K8S_VERSION: $(aksK8sVersion)
-              AKS_LOCATION: $(aksLocation)
-              AKS_RESOURECE_GROUP_NAME: $(aksResourceGroupName)
+              AKS_K8S_VERSION: $(aks_k8s_version)
+              AKS_LOCATION: $(aks_location)
+              AKS_RESOURECE_GROUP_NAME: $(aks_resource_group_name)
               AKS_CLUSTER_NAME: $(aks_cluster_name)
               AKS_NODE_COUNT: $(aks_node_count)
               AKS_DNS_PREFIX: $(aks_dns_prefix)
