@@ -48,6 +48,7 @@ stages:
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:
