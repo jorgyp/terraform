@@ -14,10 +14,10 @@ module "aks" {
     aks_resource_group_name   = "${aksResourceGroupName}"
     aks_cluster_name          = "${aksClusterName}"
     aks_node_count            = "${aksNodeCount}"
-    aks_dns_prefix            = "${aks_dns_prefix}"
-    aks_admin_username        = "${aks_admin_username}"
-    aks_client_id             = "${aks_client_id}"
-    aks_client_secret         = "${aks_client_secret}"
+    aks_dns_prefix            = "${aksDnsPrefix}"
+    aks_admin_username        = "${aksAdminUsername}"
+    aks_client_id             = "${aksClientId}"
+    aks_client_secret         = "${aksClientSecret}"
 }
 
 output "kube_config_prod" {

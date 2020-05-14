@@ -49,48 +49,5 @@ stages:
             sed -i -e "s|\${aksClientId}|$(aks_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksClientSecret}|$(aks_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-        - task: CopyFiles@2
-          inputs:
-            SourceFolder: '$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf'
-            Contents: '**'
-            TargetFolder: '$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf'
-
-
-  - stage: init
-    dependsOn: inject
-    displayName: init terraform
-    jobs:
-    - job: 
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:    
-        - script: |
-            ls "$(Pipeline.Workspace)"
-            ls "$(Pipeline.Workspace)/s/"
-            cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             terraform init $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf
-
-  - stage: apply
-    dependsOn: init
-    condition: and(always(), eq('$(terraform_task)', 'deploy'))
-    displayName: apply terraform
-    jobs:
-    - job: 
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:    
-        - script: |
             terraform apply $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf -auto-approve
-
-  - stage: destroy
-    dependsOn: init
-    displayName: destroy terraform $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf
-    jobs:
-    - job: 
-      pool:
-        vmImage: 'ubuntu-latest'
-      steps:    
-        - script: |
-            terraform destroy -auto-approve -path $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf
-
-
