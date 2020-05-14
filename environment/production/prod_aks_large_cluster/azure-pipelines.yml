@@ -39,15 +39,15 @@ stages:
       steps:    
         - script: |
             sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_k8s_version}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_location}|$(aks_location )|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_resource_group_name}|$(aks_resource_group_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_cluster_name}|$(aks_cluster_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_node_count}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_dns_prefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_admin_username}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_client_id}|$(aks_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aks_client_secret}|$(aks_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksLocation}|$(aks_location )|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksResourceGroupName}|$(aks_resource_group_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClusterName}|$(aks_cluster_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClientId}|$(aks_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClientSecret}|$(aks_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
   - stage: init
     dependsOn: inject
     displayName: init terraform
