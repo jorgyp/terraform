@@ -1,4 +1,18 @@
-trigger: none
+resources:
+  - repo: self
+  
+trigger:
+  branches:
+    include: 
+    - master
+  paths:
+    include: 
+    - environment/production/*/*/azure-pipeline.yml
+    - environment/stage/*/*/azure-pipeline.yml
+    - environment/develop/*/*/azure-pipeline.yml
+    exclude:
+    - readme.md
+    - .gitignore  
 
 variables:
 #View adoCrednetials vars in ADO library
@@ -27,7 +41,7 @@ variables:
 parameters:
 - name: terraform_task
   type: string
-  default: 'destroy'
+  default: 'deploy'
 
 resources:
   - repo: self
