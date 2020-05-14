@@ -7,9 +7,9 @@ trigger:
     - master
   paths:
     include: 
-    - environment/production/*/*/azure-pipeline.yml
-    - environment/stage/*/*/azure-pipeline.yml
-    - environment/develop/*/*/azure-pipeline.yml
+    - environment/production/*/azure-pipelines.yml
+    - environment/stage/*/azure-pipelines.yml
+    - environment/develop/*/azure-pipelines.yml
     exclude:
     - readme.md
     - .gitignore  
