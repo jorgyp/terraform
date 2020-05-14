@@ -52,11 +52,11 @@ stages:
           displayName: 'Terraform Init'
           inputs:
             targetType: inline
-            workingDirectory: '"$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)'
+            workingDirectory: 'environment/$(environment)/$(module_manifest_name)'
             script: 'terraform init'
         - task: Bash@3 
           displayName: 'Terraform Plan'
           inputs:
             targetType: inline
-            workingDirectory: '"$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)'
+            workingDirectory: 'environment/$(environment)/$(module_manifest_name)'
             script: 'terraform plan'
