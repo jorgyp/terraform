@@ -13,12 +13,7 @@ variables:
 #View adoCrednetials vars in ADO library
 - group: backendVariables
 - name: module_manifest_location
-  value: "prod_aks_large_cluster"
-
-parameters:
-- name: terraform_task
-  type: string
-  default: 'deploy'
+  value: "backend"
 
 resources:
   - repo: self
