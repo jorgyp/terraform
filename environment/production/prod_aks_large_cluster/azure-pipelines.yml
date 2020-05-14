@@ -2,6 +2,10 @@ trigger:
   branches:
     include:
     - master
+  paths:
+    exclude:
+    - readme.md
+    - .gitignore  
 
 variables:
 #View adoCrednetials vars in ADO library
