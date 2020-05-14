@@ -1,13 +1,13 @@
 resources:
   - repo: self
-  
+
 trigger:
   branches:
-    include: 
+    include:
     - master
   paths:
-    include: 
-    - environment/production/prod_aks_large_cluster/azure-pipelines.yml
+    include:
+    - environment/production/prod_aks_large_cluster/*
     exclude:
     - readme.md
     - .gitignore  
