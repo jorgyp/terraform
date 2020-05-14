@@ -13,7 +13,7 @@ variables:
 parameters:
 - name: terraform_task
   type: string
-  default: 'destroy'
+  default: 'deploy'
 
 resources:
   - repo: self
