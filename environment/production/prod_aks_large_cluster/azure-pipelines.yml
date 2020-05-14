@@ -1,15 +1,10 @@
-resources:
-  - repo: self
-  
 trigger:
   branches:
-    include: 
+    include:
     - master
   paths:
-    include: 
-    - environment/production/*/*/azure-pipeline.yml
-    - environment/stage/*/*/azure-pipeline.yml
-    - environment/develop/*/*/azure-pipeline.yml
+    include:
+    - environment/production/prod_aks_large_cluster/azure-pipelines.yml
     exclude:
     - readme.md
     - .gitignore  
