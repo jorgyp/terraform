@@ -4,7 +4,11 @@ variables:
 #View adoCrednetials vars in ADO library
 - group: adoCredentials
 - name: repo
-  value: "git@github.com:jorgyp/test_api.git"
+  value: 'git@github.com:jorgyp/test_api.git'
+- name: resourceGroup
+  value: 'aks-production-manage-rg'
+- name: clusterName
+  value: 'aks-production-manage'
 
 parameters:
 - name: terraform_task
@@ -27,6 +31,7 @@ stages:
           deploy:
             steps:
             - script: |
+                az aks get-credentials --resource-group $(resourceGroup) --name $(clusterName)
                 kubectl apply -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
                 kubectl create ns flux
                 helm upgrade -i flux \
