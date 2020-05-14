@@ -57,7 +57,7 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            terraform init
+            terraform init -path $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf
 
   - stage: apply
     dependsOn: init
@@ -73,13 +73,13 @@ stages:
 
   - stage: destroy
     dependsOn: init
-    displayName: destroy terraform
+    displayName: destroy terraform -path 
     jobs:
     - job: 
       pool:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            terraform destroy -auto-approve
+            terraform destroy -auto-approve -path $(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf
 
 
