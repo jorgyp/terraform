@@ -11,6 +11,8 @@ trigger:
 
 variables:
 #View adoCrednetials vars in ADO library
+- name: environment
+  value: "production"
 - name: source 
   value: "../../../modules/backend"
 - name: resource_group_name
