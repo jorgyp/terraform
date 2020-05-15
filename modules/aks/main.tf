@@ -1,6 +1,11 @@
 provider "azurerm" {
   version = "=1.36.1"
 }
+resource "azurerm_storage_container" "example" {
+  name                  = "akscontainer"
+  storage_account_name  = "aksaccountsyag"
+  container_access_type = "private"
+}
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" { 
   name                = var.aks_cluster_name
