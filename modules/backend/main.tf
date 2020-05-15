@@ -1,28 +1,29 @@
 provider "azurerm" {
-  version = "=1.36.1"
+  # whilst the `version` attribute is optional, we recommend pinning to a given version of the Provider
+  version = "2.0.0"
+  features {}
 }
 
-resource "azurerm_resource_group" {
-  name                = var.resource_group_name
-  location            = var.location
+resource "azurerm_resource_group" "store" {
+  name                = var.store.resource_group_name
+  location            = var.store.location
 }
 
-resource "azurerm_storage_account" {
-  name                     = var.storage_account_name
-  resource_group_name      = azurerm_resource_group.name
-  location                 = azurerm_resource_group.location
-  account_tier             = var.account_tier
-  account_replication_type = var.account_replication_type
+resource "azurerm_storage_account" "store" {
+  name                     = var.store.storage_account_name
+  resource_group_name      = azurerm_resource_group.store.name
+  location                 = azurerm_resource_group.store.location
+  account_tier             = var.store.account_tier
+  account_replication_type = var.store.account_replication_type
 
   tags = {
     environment = "production"
   }
 }
 
-resource "azure_storage_container" "stor-cont" {
-  name                  = var.storage_container_name
-  container_access_type = var.storage_container_type
-  storage_service_name  = var.storage_container_service_name
+resource "azurerm_storage_blob" "aks" {
+  name                   = var.blob_name
+  storage_account_name   = var.storage_account_name
+  storage_container_name = var.storage_container_name
+  type                   = var.blob_type
 }
-
-
