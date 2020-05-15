@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    resource_group_name       = "${resourceGroupName}"
+    resource_group_name       = "${aksResourceGroupName}"
     storage_account_name      = "${storageAccountName}"
     container_name            = "${containerName}"
     key                       = "${key}"
