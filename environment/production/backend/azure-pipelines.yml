@@ -11,7 +11,26 @@ trigger:
 
 variables:
 #View adoCrednetials vars in ADO library
-- group: backendVariables
+- name: source 
+  value: "../../../modules/backend"
+- name: resource_group_name
+  value: "aksrg"
+- name: location
+  value: "West US 2"
+- name: storage_account_name
+  value: "aksaccount"
+- name: account_tier
+  value: Standard
+- name: account_replication_type
+  value: "LRS"
+- name: storage_container_name
+  value: "akscontainer"
+- name: blob_type
+  value: "Block"
+- name: blob_name
+  value: "aksblob"
+
+
 - name: module_manifest_location
   value: "backend"
 
@@ -35,9 +54,10 @@ stages:
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${accountTier}|$(account_tier)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
-            sed -i -e "s|\${storageContainer}|$(storage_container)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
-            sed -i -e "s|\${storageContainerType}|$(storage_container_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageServiceName}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:

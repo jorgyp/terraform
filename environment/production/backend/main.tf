@@ -5,7 +5,8 @@ module "backend" {
     storage_account_name      = "${storageAccountName}"
     account_tier              = "${accountTier}"
     account_replication_type  = "${accountReplicationType}"
-    storage_container         = "${storageContainer}"
     storage_container_name    = "${storageContainerName}"
-    storage_container_type    = "${storageContainerType}"
+    storage_service           = "${storageService}"
+    blob_name                 = "${blobName}"
+    blob_type                 = "${blobType}"
 }
