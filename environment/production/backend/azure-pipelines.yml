@@ -60,6 +60,7 @@ stages:
             sed -i -e "s|\${storageServiceName}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:
