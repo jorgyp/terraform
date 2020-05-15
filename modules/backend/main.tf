@@ -5,16 +5,16 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "store" {
-  name                = var.store.resource_group_name
-  location            = var.store.location
+  name                = var.resource_group_name
+  location            = var.location
 }
 
 resource "azurerm_storage_account" "store" {
-  name                     = var.store.storage_account_name
+  name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.store.name
   location                 = azurerm_resource_group.store.location
-  account_tier             = var.store.account_tier
-  account_replication_type = var.store.account_replication_type
+  account_tier             = var.account_tier
+  account_replication_type = var.account_replication_type
 
   tags = {
     environment = "production"
@@ -23,7 +23,7 @@ resource "azurerm_storage_account" "store" {
 
 resource "azurerm_storage_blob" "aks" {
   name                   = var.blob_name
-  storage_account_name   = var.storage_account_name
+  storage_account_name   = azurerm_storage_account.store.name
   storage_container_name = var.storage_container_name
   type                   = var.blob_type
 }
