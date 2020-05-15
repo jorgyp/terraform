@@ -4,6 +4,5 @@ variable "storage_account_name" {}
 variable "account_tier" {}
 variable "account_replication_type" {}
 variable "storage_container_name" {}
-variable "storage_service" {}
 variable "blob_name" {}
 variable "blob_type" {}
