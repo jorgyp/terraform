@@ -1,4 +1,5 @@
 module "backend" {
+    source                    = "${source}"
     resource_group_name       = "${resourceGroupName}"
     location                  = "${location}"
     storage_account_name      = "${storageAccountName}"
