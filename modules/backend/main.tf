@@ -4,12 +4,6 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_storage_container" "example" {
-  name                  = "akscontainer"
-  storage_account_name  = "aksaccountsyag"
-  container_access_type = "private"
-}
-
 resource "azurerm_resource_group" "store" {
   name                = var.resource_group_name
   location            = var.location
@@ -25,6 +19,12 @@ resource "azurerm_storage_account" "store" {
   tags = {
     environment = "production"
   }
+}
+
+resource "azurerm_storage_container" "example" {
+  name                  = "akscontainer"
+  storage_account_name  = "aksaccountsyag"
+  container_access_type = "private"
 }
 
 resource "azurerm_storage_blob" "aks" {
