@@ -11,6 +11,7 @@ trigger:
 
 variables:
 #View adoCrednetials vars in ADO library
+- group: adoCredentials
 - name: environment
   value: "production"
 - name: source 
@@ -20,7 +21,7 @@ variables:
 - name: location
   value: "West US 2"
 - name: storage_account_name
-  value: "aksaccount"
+  value: "aksaccountsyag"
 - name: storage_service
   value: "aksstorageservice"
 - name: account_tier
@@ -32,9 +33,7 @@ variables:
 - name: blob_type
   value: "Block"
 - name: blob_name
-  value: "aksblob"
-
-
+  value: "aksblobsyagol"
 - name: module_manifest_location
   value: "backend"
 
@@ -62,6 +61,8 @@ stages:
             sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${azureClientId}|$(azure_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${azureClientSecret}|$(azure_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
