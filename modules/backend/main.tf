@@ -27,10 +27,9 @@ resource "azure_storage_container" "stor-cont" {
   storage_service_name  = var.storage_service
 }
 
-resource "container"
 resource "azurerm_storage_blob" "aks" {
   name                   = var.blob_name
   storage_account_name   = azurerm_storage_account.store.name
-  storage_container_name = var.storage_container_name
+  storage_container_name = azure_storage_container.stor-cont.name
   type                   = var.blob_type
 }
