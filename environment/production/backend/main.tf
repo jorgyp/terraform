@@ -9,4 +9,6 @@ module "backend" {
     storage_service           = "aksstorageservice"
     blob_name                 = "aksblobsyag"
     blob_type                 = "Block"
+    storage_type              = "blob"
+    storage_service           = "aksstorageservice"
 }
