@@ -61,8 +61,6 @@ stages:
             sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
-            sed -i -e "s|\${azureClientId}|$(azure_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
-            sed -i -e "s|\${azureClientSecret}|$(azure_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
