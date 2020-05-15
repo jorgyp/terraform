@@ -17,6 +17,7 @@ resource "azurerm_storage_account" {
   tags = {
     environment = "production"
   }
+}
 
 resource "azure_storage_container" "stor-cont" {
   name                  = var.storage_container_name
