@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
-    resource_group_name       = "tfgroupyagolnikov"
-    storage_account_name      = "tfstorageyagolnikov"
-    container_name            = "terraformrg"
-    key                       = "tfstateprod"
+    resource_group_name       = "${resourceGroupName}"
+    storage_account_name      = "${storageAccountName}"
+    container_name            = "${containerName}"
+    key                       = "${key}"
   }
 }
 
@@ -16,8 +16,8 @@ module "aks" {
     aks_node_count            = "${aksNodeCount}"
     aks_dns_prefix            = "${aksDnsPrefix}"
     aks_admin_username        = "${aksAdminUsername}"
-    aks_client_id             = "${aksClientId}"
-    aks_client_secret         = "${aksClientSecret}"
+    azure_client_id           = "${azureClientId}"
+    azure_client_secret       = "${azureClientSecret}"
 }
 
 output "kube_config_prod" {

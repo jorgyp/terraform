@@ -19,7 +19,7 @@ variables:
 - name: aks_location
   value: "West US 2" 
 - name: aks_resource_group_name
-  value: "aks-production-manage-rg"
+  value: "aksrg"
 - name: aks_cluster_name
   value: "aks-production-manage"
 - name: aks_node_count
@@ -32,6 +32,12 @@ variables:
   value: "prod_aks_large_cluster"
 - name: environment 
   value: "production"
+- name: storage_account_name
+  value: "aksaccount"
+- name: container_name
+  value: "akscontainer"
+- name: key
+  value: "tfstateprod"
 
 parameters:
 - name: terraform_task
@@ -50,6 +56,9 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${containerName}|$(container_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${key}|$(key)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksLocation}|$(aks_location)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
@@ -58,8 +67,8 @@ stages:
             sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aksClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aksClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClientId}|$(azure_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClientSecret}|$(azure_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
