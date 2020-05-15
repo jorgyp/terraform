@@ -18,7 +18,7 @@ resource "azurerm_storage_account" {
     environment = "production"
   }
 
-resource "azure_storage_container" {
+resource "azure_storage_container" "stor-cont" {
   name                  = var.storage_container_name
   container_access_type = var.storage_container_type
   storage_service_name  = var.storage_container_service_name
