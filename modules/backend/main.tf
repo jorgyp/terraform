@@ -21,15 +21,9 @@ resource "azurerm_storage_account" "store" {
   }
 }
 
-resource "azure_storage_container" "stor-cont" {
-  name                  = var.storage_container_name
-  container_access_type = var.storage_type
-  storage_service_name  = var.storage_service
-}
-
 resource "azurerm_storage_blob" "aks" {
   name                   = var.blob_name
   storage_account_name   = azurerm_storage_account.store.name
-  storage_container_name = azure_storage_container.stor-cont.name
+  storage_container_name = var.storage_container_name
   type                   = var.blob_type
 }
