@@ -21,8 +21,10 @@ variables:
   value: "West US 2"
 - name: storage_account_name
   value: "aksaccount"
+- name: storage_service
+  value: "aksstorageservice"
 - name: account_tier
-  value: Standard
+  value: "Standard"
 - name: account_replication_type
   value: "LRS"
 - name: storage_container_name
@@ -57,7 +59,7 @@ stages:
             sed -i -e "s|\${accountTier}|$(account_tier)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
-            sed -i -e "s|\${storageServiceName}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
+            sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
