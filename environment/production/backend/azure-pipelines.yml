@@ -30,7 +30,7 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-        sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${location}|$(location)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_location)/main.tf"
