@@ -9,15 +9,18 @@ trigger:
     - readme.md
     - .gitignore  
 
+
 variables:
 #View adoCrednetials vars in ADO library
 - group: backendVariables
 - name: module_manifest_location
   value: "backend"
 
-resources:
-  - repo: self
-
+parameters:
+  - name: terraform_task
+    type: string
+    default: 'deploy'
+    
 stages: 
   - stage: deploy
     displayName: inject variables into manifest file (main.tf)
