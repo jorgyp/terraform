@@ -13,7 +13,7 @@ resource "azurerm_storage_container" "example" {
 
 resource "azurerm_storage_blob" "aks" {
   name                   = var.blob_name
-  storage_account_name   = azurerm_storage_account.store.name
+  storage_account_name   = azurerm_storage_container.example.name
   storage_container_name = var.storage_container_name
   type                   = var.blob_type
 }
