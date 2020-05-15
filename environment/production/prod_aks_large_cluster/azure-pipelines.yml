@@ -33,7 +33,7 @@ variables:
 - name: environment 
   value: "production"
 - name: storage_account_name
-  value: "aksaccount"
+  value: "aksaccountsyag"
 - name: container_name
   value: "akscontainer"
 - name: key
