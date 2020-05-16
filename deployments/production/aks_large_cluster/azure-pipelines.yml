@@ -40,6 +40,8 @@ variables:
   value: "aksaccountsyag"
 - name: container_name
   value: "statecontainer"
+- name: storage_container_name
+  value: "statecontainer"
 - name: key
   value: "aksprod"
 
