@@ -7,6 +7,14 @@ terraform {
   }
 }
 
+
+module "storage_container" {
+    source                    = "${sourceStorageContainer}"
+    storage_container_name    = "${storageContainerName}"
+    storage_account_name      = "${storageAccountName}"
+    container_access_type     = "${containerAccessType}"
+}
+
 module "aks" {
     source                    = "${source}"
     aks_k8s_version           = "${aksK8sVersion}"
@@ -23,5 +31,6 @@ module "aks" {
 output "kube_config_prod" {
   value = "${module.aks.kube_config}"
 }
+
 
 #Run: terraform output kube_config > ~/.kube/aksconfig && export KUBECONFIG=~/.kube/aksconfig

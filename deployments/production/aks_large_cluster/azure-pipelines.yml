@@ -69,6 +69,10 @@ stages:
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${sourceStorageContainer}|$(source_storage_container)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
