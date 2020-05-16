@@ -3,6 +3,4 @@ variable "location" {}
 variable "storage_account_name" {}
 variable "account_tier" {}
 variable "account_replication_type" {}
-variable "storage_container_name" {}
-variable "blob_name" {}
-variable "blob_type" {}
+variable "environment" {}

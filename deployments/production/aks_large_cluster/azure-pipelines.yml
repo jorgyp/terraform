@@ -1,0 +1,99 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - deployments/production/prod_aks_large_cluster/azure-pipelines.yml
+    exclude:
+    - readme.md
+    - .gitignore  
+
+variables:
+#View adoCrednetials vars in ADO library
+- group: adoCredentials
+- name: source
+  value: "../../../modules/aks/"
+- name: environment 
+  value: "production"
+- name: aks_k8s_version
+  value: "1.16.7"
+- name: aks_location
+  value: "West US 2" 
+- name: aks_resource_group_name
+  value: "aksrg"
+- name: aks_cluster_name
+  value: "aks-production-manage"
+- name: aks_node_count
+  value: 2
+- name: aks_dns_prefix
+  value: aks-production-manage
+- name: aks_admin_username
+  value: "sergeyago"
+- name: module_manifest_name
+  value: "aks_large_cluster"
+- name: storage_account_name
+  value: "aksaccountsyag"
+- name: container_name
+  value: "statecontainer"
+- name: key
+  value: "aksprod"
+
+parameters:
+- name: terraform_task
+  type: string
+  default: 'destroy'
+
+resources:
+  - repo: self
+
+stages: 
+  - stage: deploy
+    displayName: inject variables into manifest file (main.tf)
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+        - script: |
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${containerName}|$(container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${key}|$(key)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksLocation}|$(aks_location)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksResourceGroupName}|$(aks_resource_group_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksClusterName}|$(aks_cluster_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+            cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(module_manifest_name)/main.tf"
+        - task: Bash@3 
+          displayName: 'Terraform Init'
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(module_manifest_name)'
+            script: 'terraform init'
+        - task: Bash@3 
+          displayName: 'Terraform Plan'
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(module_manifest_name)'
+            script: 'terraform plan'
+        - task: Bash@3 
+          displayName: 'Terraform Apply'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'deploy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(module_manifest_name)'
+            script: 'terraform apply -auto-approve'
+
+        - task: Bash@3 
+          displayName: 'Terraform Destroy'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(module_manifest_name)'
+            script: 'terraform destroy -auto-approve'
