@@ -20,8 +20,18 @@ module "storage_account" {
 }
 
 module "storage_container" {
+    depends_on = ["null_resource.delay"]
     source                    = "${sourceStorageContainer}"
     storage_container_name    = "${storageContainerName}"
     storage_account_name      = "${storageAccountName}"
     container_access_type     = "${containerAccessType}"
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 600"
+  }
+  triggers = {
+    "before" = "${storage_container}"
+  }
 }
