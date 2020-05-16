@@ -1,6 +1,12 @@
 provider "azurerm" {
   version = "=1.36.1"
 }
+module "storage_container" {
+    source                    = "${sourceStorageContainer}"
+    storage_container_name    = "${storageContainerName}"
+    storage_account_name      = "${storageAccountName}"
+    container_access_type     = "${containerAccessType}"
+}
 
 terraform {
   backend "azurerm" {
@@ -9,14 +15,6 @@ terraform {
     container_name            = "${containerName}"
     key                       = "${key}"
   }
-}
-
-
-module "storage_container" {
-    source                    = "${sourceStorageContainer}"
-    storage_container_name    = "${storageContainerName}"
-    storage_account_name      = "${storageAccountName}"
-    container_access_type     = "${containerAccessType}"
 }
 
 module "aks" {
