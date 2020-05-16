@@ -14,3 +14,8 @@ resource "azurerm_storage_account" "store" {
     environment            = var.environment
   }
 }
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 600"
+}
