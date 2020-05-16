@@ -67,8 +67,8 @@ stages:
             sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aksClientId}|$(azure_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
-            sed -i -e "s|\${aksClientSecret}|$(azure_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${azureClientId}|$(azure_client_id)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
+            sed -i -e "s|\${azureClientSecret}|$(azure_client_secret)|g" "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
             cat "$(Pipeline.Workspace)/s/environment/$(environment)/$(module_manifest_name)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'
