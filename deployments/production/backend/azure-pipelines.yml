@@ -21,6 +21,8 @@ variables:
   value: "LRS"
 - name: storage_container_name
   value: "statecontainer"
+- name: container_access_type
+  value: "private"
 - name: manifest_location
   value: "backend"
 - name: source_resource_group
@@ -44,6 +46,7 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
+            sed -i -e "s|\${environment}|$(environment)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${location}|$(location)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
@@ -51,6 +54,7 @@ stages:
             sed -i -e "s|\${accountTier}|$(account_tier)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
