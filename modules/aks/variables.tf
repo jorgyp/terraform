@@ -1,5 +1,5 @@
-variable "aks_client_id" {}
-variable "aks_client_secret" {}
+variable "azure_client_id" {}
+variable "azure_client_secret" {}
 variable aks_location {}
 variable aks_resource_group_name {}
 variable aks_cluster_name {}

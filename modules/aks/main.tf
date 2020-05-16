@@ -26,8 +26,8 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   }
 
   service_principal {
-    client_id         = var.aks_client_id
-    client_secret     = var.aks_client_secret
+    client_id         = var.azure_client_id
+    client_secret     = var.azure_client_secret
   }
 
   tags = {
