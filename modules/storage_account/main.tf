@@ -17,6 +17,6 @@ resource "azurerm_storage_account" "store" {
 
 resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "sleep 600"
+    command = "sleep 1200"
   }
 }
