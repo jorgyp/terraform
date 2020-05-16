@@ -19,10 +19,6 @@ variables:
   value: "Standard"
 - name: account_replication_type
   value: "LRS"
-- name: storage_container_name
-  value: "statecontainer"
-- name: container_access_type
-  value: "private"
 - name: manifest_location
   value: "backend"
 - name: source_resource_group
@@ -57,7 +53,7 @@ stages:
             sed -i -e "s|\${sourceResourceGroup}|$(source_resource_group)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${sourceStorageAccount}|$(source_storage_account)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            
+
             cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'

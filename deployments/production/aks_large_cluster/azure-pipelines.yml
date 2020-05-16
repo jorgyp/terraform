@@ -14,6 +14,10 @@ variables:
 - group: adoCredentials
 - name: source
   value: "../../../modules/aks/"
+- name: source_storage_container
+  value: "../../../modules/storage_container"
+- name: container_access_type
+  value: "private"
 - name: environment 
   value: "production"
 - name: aks_k8s_version
