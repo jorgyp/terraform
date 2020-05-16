@@ -1,13 +1,4 @@
-trigger:
-  branches:
-    include:
-    - master
-  paths:
-    include:
-    - deployments/production/backend/azure-pipelines.yml
-    exclude:
-    - readme.md
-    - .gitignore  
+trigger: none
 
 variables:
 #View adoCrednetials vars in ADO library
