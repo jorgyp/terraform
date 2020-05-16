@@ -6,7 +6,7 @@ module "resource_group" {
 
 module "storage_account" {
     source                    = "${sourceStorageACccount}"
-    environment                = "${environment}"
+    environment               = "${environment}"
     storage_account_name      = "${storageAccountName}"
     resource_group_name       = "${resourceGroupName}"
     location                  = "${location}"
