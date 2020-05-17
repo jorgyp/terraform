@@ -1,3 +1,6 @@
+resources:
+  - repo: self
+
 trigger: none
 
 variables:
@@ -14,9 +17,6 @@ parameters:
 - name: terraform_task
   type: string
   default: 'deploy'
-
-resources:
-  - repo: self
 
 stages: 
   - stage: deploy
@@ -52,5 +52,5 @@ stages:
             steps:
             - script: |
                 kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
-                echo "copy this key to git repository settings" && pause 30s
+                echo "copy this key to git repository settings"
   
