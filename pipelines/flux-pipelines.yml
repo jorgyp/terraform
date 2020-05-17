@@ -65,7 +65,6 @@ stages:
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
-                namespace: 'flux'
                 command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd'
