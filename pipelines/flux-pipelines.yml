@@ -68,8 +68,8 @@ stages:
                 namespace: 'flux'
                 command: 'upgrade'
                 chartType: 'Name'
-                chartName: 'fluxcd'
-                releaseName: 'flux'
+                chartName: 'flux'
+                releaseName: 'fluxcd'
                 arguments: |
                   --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
