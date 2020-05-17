@@ -12,7 +12,6 @@ module "aks" {
     key                       = "${key}"
     aks_k8s_version           = "${aksK8sVersion}"
     aks_location              = "${aksLocation}"
-    aks_resource_group_name   = "${aksResourceGroupName}"
     aks_cluster_name          = "${aksClusterName}"
     aks_node_count            = "${aksNodeCount}"
     aks_dns_prefix            = "${aksDnsPrefix}"
