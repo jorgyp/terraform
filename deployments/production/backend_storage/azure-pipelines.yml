@@ -51,7 +51,10 @@ stages:
             sed -i -e "s|\${sourceResourceGroup}|$(source_resource_group)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${sourceStorageAccount}|$(source_storage_account)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-
+            sed -i -e "s|\${sourceStorageContainer}|$(source_storage_container)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'

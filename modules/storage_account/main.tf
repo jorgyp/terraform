@@ -20,3 +20,10 @@ resource "null_resource" "delay" {
     command = "sleep 1000"
   }
 }
+
+resource "azurerm_storage_container" "example" {
+  name                  = var.storage_container_name
+  storage_account_name  = azurerm_storage_account.store.name
+  container_access_type = var.container_access_type
+}
+

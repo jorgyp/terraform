@@ -7,7 +7,7 @@ trigger:
     - deployments/production/prod_aks_large_cluster/azure-pipelines.yml
     exclude:
     - readme.md
-    - .gitignore  
+    - .gitignore
 
 variables:
 #View adoCrednetials vars in ADO library
@@ -99,7 +99,6 @@ stages:
             targetType: inline
             workingDirectory: 'deployments/$(environment)/$(manifest_location)'
             script: 'terraform apply -auto-approve'
-
         - task: Bash@3 
           displayName: 'Terraform Destroy'
           condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
