@@ -35,9 +35,9 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
-                ls ../s
-                ls $(Pipeline.Workspace)/
-                
+                tree $(Pipeline.Workspace)
+                echo "_*-_*-_*-_*-_*-"
+                tree ../
 
                 
             - task: Kubernetes@1
