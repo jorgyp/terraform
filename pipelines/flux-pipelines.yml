@@ -35,10 +35,7 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
-                sudo apt install tree -y
-                tree /
-                echo "------------"
-                sudo find / -type f -iname "azure-pipelines.yml"
+                sudo find / -type f -iname "main.tf"
                 
             - task: Kubernetes@1
               inputs:
