@@ -19,10 +19,8 @@ variables:
   value: "LRS"
 - name: manifest_location
   value: "backend_storage"
-- name: source_resource_group
-  value: "../../../modules/resource_group"
-- name: source_storage_account
-  value: "../../../modules/storage_account"
+- name: source_backend_storage
+  value: "../../../modules/backend_storage"
 - name: storage_container_name
   value: "statecontainer"
 - name: container_access_type
@@ -50,10 +48,8 @@ stages:
             sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${sourceResourceGroup}|$(source_resource_group)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${sourceStorageAccount}|$(source_storage_account)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${sourceStorageContainer}|$(source_storage_container)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            sed -i -e "s|\${sourceBackendStorage}|$(source_backend_storage)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"

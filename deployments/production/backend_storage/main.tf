@@ -3,17 +3,12 @@ provider "azurerm" {
   version = "2.0.0"
   features {}
 }
-module "resource_group" {
-    source                    = "${sourceResourceGroup}"
+module "backend_storage" {
+    source                    = "${sourceBackendStorage}"
     location                  = "${location}"
     resource_group_name       = "${resourceGroupName}"
-}
-
-module "storage_account" {
-    source                    = "${sourceStorageAccount}"
     environment               = "${environment}"
     storage_account_name      = "${storageAccountName}"
-    resource_group_name       = "${resourceGroupName}"
     location                  = "${location}"
     account_tier              = "${accountTier}"
     account_replication_type  = "${accountReplicationType}"
