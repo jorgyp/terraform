@@ -9,7 +9,7 @@ variables:
 - name: repo
   value: 'git@github.com:jorgyp/test_api.git'
 - name: resourceGroup
-  value: 'aks-production-manage-rg'
+  value: 'aksrg'
 - name: clusterName
   value: 'aks-production-manage'
 
