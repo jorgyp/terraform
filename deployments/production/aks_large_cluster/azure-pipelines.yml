@@ -1,3 +1,6 @@
+resources:
+  - repo: self
+
 trigger:
   branches:
     include:
@@ -12,44 +15,41 @@ trigger:
 variables:
 #View adoCrednetials vars in ADO library
 - group: adoCredentials
-- name: source
-  value: "../../../modules/aks/"
-- name: container_access_type
-  value: "private"
 - name: environment 
   value: "production"
+- name: source
+  value: "../../../modules/aks/"
+- name: aks_admin_username
+  value: "sergeyago"
+- name: aks_dns_prefix
+  value: aks-production-manage
+- name: aks_cluster_name
+  value: "aks-production-manage"
 - name: aks_k8s_version
   value: "1.16.7"
 - name: aks_location
   value: "West US 2" 
-- name: aks_resource_group_name
-  value: "aksrg"
-- name: aks_cluster_name
-  value: "aks-production-manage"
 - name: aks_node_count
   value: 2
-- name: aks_dns_prefix
-  value: aks-production-manage
-- name: aks_admin_username
-  value: "sergeyago"
+- name: aks_resource_group_name
+  value: "aksrg"
+- name: container_access_type
+  value: "private"
+- name: container_name
+  value: "statecontainer"
+- name: key
+  value: "aksprod"
 - name: manifest_location
   value: "aks_large_cluster"
 - name: storage_account_name
   value: "aksaccountsyag"
-- name: container_name
-  value: "statecontainer"
 - name: storage_container_name
   value: "statecontainer"
-- name: key
-  value: "aksprod"
 
 parameters:
 - name: terraform_task
   type: string
   default: 'deploy'
-
-resources:
-  - repo: self
 
 stages: 
   - stage: deploy

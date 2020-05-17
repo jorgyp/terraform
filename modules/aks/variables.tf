@@ -1,8 +1,8 @@
 variable "azure_client_id" {}
 variable "azure_client_secret" {}
-variable aks_location {}
-variable aks_resource_group_name {}
-variable aks_cluster_name {}
+variable "aks_location" {}
+variable "aks_resource_group_name" {}
+variable "aks_cluster_name" {}
 variable "aks_node_count" {}
 variable "aks_dns_prefix" {}
 variable "aks_admin_username" {}

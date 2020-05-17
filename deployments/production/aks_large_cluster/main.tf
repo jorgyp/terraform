@@ -2,8 +2,6 @@ provider "azurerm" {
   version = "=1.36.1"
 }
 
-
-
 module "aks" {
     source                    = "${source}"
     aks_resource_group_name   = "${aksResourceGroupName}"

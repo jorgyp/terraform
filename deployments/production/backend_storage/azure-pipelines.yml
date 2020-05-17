@@ -1,3 +1,6 @@
+resources:
+  - repo: self
+
 trigger: none
 
 variables:
@@ -5,26 +8,26 @@ variables:
 - group: adoCredentials
 - name: environment
   value: "production"
-- name: resource_group_name
-  value: "aksrg"
-- name: location
-  value: "West US 2"
-- name: storage_account_name
-  value: "aksaccountsyag"
-- name: storage_service
-  value: "aksstorageservice"
+- name: source_backend_storage
+  value: "../../../modules/backend_storage"
 - name: account_tier
   value: "Standard"
 - name: account_replication_type
   value: "LRS"
-- name: manifest_location
-  value: "backend_storage"
-- name: source_backend_storage
-  value: "../../../modules/backend_storage"
-- name: storage_container_name
-  value: "statecontainer"
 - name: container_access_type
   value: "private"
+- name: location
+  value: "West US 2"
+- name: manifest_location
+  value: "backend_storage"
+- name: resource_group_name
+  value: "aksrg"
+- name: storage_account_name
+  value: "aksaccountsyag"
+- name: storage_service
+  value: "aksstorageservice"
+- name: storage_container_name
+  value: "statecontainer"
 
 parameters:
   - name: terraform_task
@@ -74,7 +77,6 @@ stages:
             targetType: inline
             workingDirectory: 'deployments/$(environment)/$(manifest_location)'
             script: 'terraform apply -auto-approve'
-
         - task: Bash@3 
           displayName: 'Terraform Destroy'
           condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
