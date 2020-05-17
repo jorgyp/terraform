@@ -6,7 +6,7 @@ trigger: none
 variables:
 #View adoCrednetials vars in ADO library
 - group: adoCredentials
-- name: repo
+- name: gitRepo
   value: 'git@github.com:jorgyp/test_api.git'
 - name: resourceGroup
   value: 'aksrg'
@@ -46,20 +46,18 @@ stages:
             - task: HelmInstaller@1
               inputs:
                 helmVersionToInstall: 'latest'
+
             - task: HelmDeploy@0
+              name: FluxCD
+              displayName: Install Flux CD
               inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceConnection: 'k8s manage prod'
-                namespace: 'flux'
+                connectionType: 'None'
+                namespace: 'fluxcd'
                 command: 'upgrade'
                 chartType: 'Name'
-                chartName: 'flux'
-                arguments: |
-                  --set helmOperator.create=true \
-                  --set helmOperator.createCRD=false \
-                  --set git.url=$repo \
-                  --namespace flux \
-                  fluxcd/flux            
+                chartName: 'fluxcd/flux'
+                releaseName: 'flux'
+                overrideValues: 'git.url=git@github.com:$(gitRepo),git.pollInterval=1m'
 
             - task: Kubernetes@1
               inputs:
@@ -68,5 +66,3 @@ stages:
                 namespace: 'flux'
                 command: 'logs'
                 arguments: 'deployment/flux | grep identity.pub | cut -d ''"'' -f2'
-                secretType: 'dockerRegistry'
-                containerRegistryType: 'Azure Container Registry'
