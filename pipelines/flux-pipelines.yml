@@ -71,7 +71,7 @@ stages:
                 chartName: 'fluxcd'
                 releaseName: 'flux'
                 arguments: |
-                  flux fluxcd/flux \
+                  -i flux fluxcd/flux \
                   --set helmOperator.create=true \
                   --set helmOperator.createCRD=false \
                   --set git.url=$(gitRepo) \
