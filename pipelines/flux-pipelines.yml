@@ -35,12 +35,10 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
-                sudo find / -type d -iname "kubernetes"
                 sudo apt install tree -y
-                tree $(Pipeline.Workspace)
-                echo "_*-_*-_*-_*-_*-"
-                tree ../
-
+                tree /
+                echo "------------"
+                sudo find / -type f -iname "azure-pipelines.yml"
                 
             - task: Kubernetes@1
               inputs:
