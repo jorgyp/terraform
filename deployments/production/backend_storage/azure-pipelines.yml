@@ -40,20 +40,21 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            sed -i -e "s|\${environment}|$(environment)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${location}|$(location)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${accountTier}|$(account_tier)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageService}|$(storage_service)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${blobName}|$(blob_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${blobType}|$(blob_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${sourceBackendStorage}|$(source_backend_storage)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf")
+            sed -i -e "s|\${environment}|$(environment)|g" "$manifest_file"
+            sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$manifest_file"
+            sed -i -e "s|\${location}|$(location)|g" "$manifest_file"
+            sed -i -e "s|\${accountTier}|$(account_tier)|g" "$manifest_file"
+            sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$manifest_file"
+            sed -i -e "s|\${storageService}|$(storage_service)|g" "$manifest_file"
+            sed -i -e "s|\${blobName}|$(blob_name)|g" "$manifest_file"
+            sed -i -e "s|\${blobType}|$(blob_type)|g" "$manifest_file"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
+            sed -i -e "s|\${sourceBackendStorage}|$(source_backend_storage)|g" "$manifest_file"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$manifest_file"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$manifest_file"
+            cat "$manifest_file"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:

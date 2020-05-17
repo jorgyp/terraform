@@ -60,21 +60,22 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:
         - script: |
-            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${containerName}|$(container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${key}|$(key)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${source}|$(source)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksLocation}|$(aks_location)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksResourceGroupName}|$(aks_resource_group_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksClusterName}|$(aks_cluster_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf")
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$manifest_file"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
+            sed -i -e "s|\${containerName}|$(container_name)|g" "$manifest_file"
+            sed -i -e "s|\${key}|$(key)|g" "$manifest_file"
+            sed -i -e "s|\${source}|$(source)|g" "$manifest_file"
+            sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$manifest_file"
+            sed -i -e "s|\${aksLocation}|$(aks_location)|g" "$manifest_file"
+            sed -i -e "s|\${aksResourceGroupName}|$(aks_resource_group_name)|g" "$manifest_file"
+            sed -i -e "s|\${aksClusterName}|$(aks_cluster_name)|g" "$manifest_file"
+            sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$manifest_file"
+            sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$manifest_file"
+            sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$manifest_file"
+            sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$manifest_file"
+            sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$manifest_file"
+            cat "$manifest_file"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:
