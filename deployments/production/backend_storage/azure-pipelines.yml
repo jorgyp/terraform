@@ -5,8 +5,6 @@ variables:
 - group: adoCredentials
 - name: environment
   value: "production"
-- name: source 
-  value: "../../../modules/backend"
 - name: resource_group_name
   value: "aksrg"
 - name: location
