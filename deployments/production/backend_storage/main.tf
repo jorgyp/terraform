@@ -9,7 +9,6 @@ module "backend_storage" {
     resource_group_name       = "${resourceGroupName}"
     environment               = "${environment}"
     storage_account_name      = "${storageAccountName}"
-    location                  = "${location}"
     account_tier              = "${accountTier}"
     account_replication_type  = "${accountReplicationType}"
     storage_container_name    = "${storageContainerName}"
