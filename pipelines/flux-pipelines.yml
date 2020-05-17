@@ -33,15 +33,18 @@ stages:
             - task: KubectlInstaller@0
               inputs:
                 kubectlVersion: 'latest'
+
             - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 namespace: 'flux'
                 command: 'apply'
-                secretType: 'dockerRegistry'
                 useConfigurationFile: true
-                configuration: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
+                configurationType: 'inline'
+                inline: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
+                secretType: 'dockerRegistry'
+                containerRegistryType: 'Azure Container Registry'
 
             - task: HelmInstaller@1
               inputs:
