@@ -35,10 +35,7 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
-                ls
-                ls ../
-                ls ../s
-                ls ./
+                ls /home/vsts/work/1/s/
                 
             - task: Kubernetes@1
               inputs:
