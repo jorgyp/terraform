@@ -37,9 +37,7 @@ stages:
             - script: |
                 ls
                 ls ..
-                ls s
-                ls $(Pipeline.Workspace)/s
-                ls $(Pipeline.Workspace)
+                ls ./*/
 
                 
             - task: Kubernetes@1
