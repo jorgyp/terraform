@@ -66,12 +66,11 @@ stages:
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
-                command: 'upgrade'
+                command: 'install'
                 chartType: 'Name'
-                chartName: 'flux'
-                releaseName: 'fluxcd'
-                arguments: |
-                  flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
+                chartName: 'fluxcd'
+                releaseName: 'flux'
+                arguments: -i flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
             - task: Kubernetes@1
               inputs:
