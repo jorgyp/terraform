@@ -36,6 +36,7 @@ stages:
 
             - script: |
                 ls ../s
+                ls $(Pipeline.Workspace)/
                 
 
                 
