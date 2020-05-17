@@ -6,7 +6,7 @@ trigger: none
 variables:
 #View adoCrednetials vars in ADO library
 - group: adoCredentials
-- name: repo
+- name: gitRepo
   value: 'git@github.com:jorgyp/test_api.git'
 - name: resourceGroup
   value: 'aksrg'
@@ -30,27 +30,53 @@ stages:
         runOnce:
           deploy:
             steps:
-            - script: |
-                az aks get-credentials --resource-group $(resourceGroup) --name $(clusterName)
-                kubectl apply -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
-                kubectl create ns flux
-                helm upgrade -i flux \
-                --set helmOperator.create=true \
-                --set helmOperator.createCRD=false \
-                --set git.url=$repo \
-                --namespace flux \
-                fluxcd/flux
-                sleep 60s
+            - task: KubectlInstaller@0
+              inputs:
+                kubectlVersion: 'latest'
 
-    - deployment: install_flux 
-      pool:
-        vmImage: 'ubuntu-latest'
-      environment: install_flux
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - script: |
-                kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
-                echo "copy this key to git repository settings"
-  
+            - task: Kubernetes@1
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                command: 'create'
+                useConfigurationFile: true
+                configurationType: 'inline'
+                inline: 'ns flux'
+
+            - task: Kubernetes@1
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'apply'
+                arguments: -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
+
+            - task: HelmInstaller@1
+              inputs:
+                helmVersionToInstall: 'latest'
+
+            - task: HelmDeploy@0
+              inputs:
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
+                command: 'upgrade'
+                chartType: 'Name'
+                chartName: 'fluxcd/flux'
+                arguments: |
+                  -i flux \
+                  --set helmOperator.create=true \
+                  --set helmOperator.createCRD=false \
+                  --set git.url=$repo \
+                  --namespace flux \
+                  fluxcd/flux
+
+            - task: Kubernetes@1
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'logs'
+                arguments: 'deployment/flux | grep identity.pub | cut -d ''"'' -f2'
