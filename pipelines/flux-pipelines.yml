@@ -18,7 +18,7 @@ parameters:
   type: string
   default: 'deploy'
 
-stages: 
+stages:
   - stage: deploy
     displayName: inject variables into manifest file (main.tf)
     jobs:
@@ -30,12 +30,19 @@ stages:
         runOnce:
           deploy:
             steps:
+            - task: PowerShell@2
+              displayName: 'Manual Install Habitat'
+              inputs:
+                targetType: 'inline'
+                script: 'git clone https://github.com/jorgyp/terraform.git'
             - task: KubectlInstaller@0
               inputs:
                 kubectlVersion: 'latest'
 
             - script: |
-                sudo find / -type f -iname "main.tf"
+                ls ./
+                ls ../
+                ls $(Pipeline.Workspace)/
                 
             - task: Kubernetes@1
               inputs:
@@ -43,7 +50,7 @@ stages:
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: '$(Pipeline.Workspace)/kubernetes/resources/fluxcd.yml'
+                configuration: '$(Pipeline.Workspace)/terraform/kubernetes/resources/fluxcd.yml'
                 arguments: '-f'
 
             - task: Kubernetes@1
