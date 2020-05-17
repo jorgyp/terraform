@@ -66,7 +66,7 @@ stages:
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
-                command: 'install'
+                command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd'
                 releaseName: 'flux'
