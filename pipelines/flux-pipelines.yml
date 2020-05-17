@@ -38,10 +38,10 @@ stages:
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
-                command: 'create'
+                command: 'apply'
                 useConfigurationFile: true
-                configurationType: 'inline'
-                inline: 'ns flux'
+                configuration: 'kubernetes/resources/fluxcd.yml'
+                arguments: '-f'
 
             - task: Kubernetes@1
               inputs:
