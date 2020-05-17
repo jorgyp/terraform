@@ -46,7 +46,6 @@ stages:
                 command: 'apply'
                 useConfigurationFile: true
                 configuration: 'terraform/kubernetes/resources/fluxcd.yml'
-                arguments: '-f'
 
             - task: Kubernetes@1
               inputs:
