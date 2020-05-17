@@ -67,8 +67,6 @@ stages:
                 kubernetesCluster: 'aks-production-manage'
                 command: 'upgrade'
                 chartType: 'Name'
-                chartName: 'fluxcd'
-                releaseName: 'flux'
                 arguments: |
                   -i flux fluxcd/flux \
                   --set helmOperator.create=true \
