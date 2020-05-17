@@ -34,6 +34,12 @@ stages:
               inputs:
                 kubectlVersion: 'latest'
 
+            - script: |
+                ls
+                ls ../
+                ls ../s
+                ls ./
+                
             - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'
