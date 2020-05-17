@@ -41,10 +41,7 @@ stages:
                 namespace: 'flux'
                 command: 'apply'
                 useConfigurationFile: true
-                configurationType: 'inline'
-                inline: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
-                secretType: 'dockerRegistry'
-                containerRegistryType: 'Azure Container Registry'
+                configuration: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
 
             - task: HelmInstaller@1
               inputs:
