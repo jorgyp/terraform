@@ -73,9 +73,8 @@ stages:
                   -i flux \
                   --set helmOperator.create=true \
                   --set helmOperator.createCRD=false \
-                  --set git.url=$repo \
-                  --namespace flux \
-                  fluxcd/flux
+                  --set git.url=$(gitRepo)
+
 
             - task: Kubernetes@1
               inputs:
