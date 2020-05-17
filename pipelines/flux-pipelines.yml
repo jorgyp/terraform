@@ -35,14 +35,13 @@ stages:
                 kubectlVersion: 'latest'
 
             - task: Kubernetes@1
-              displayName: create flux namespace
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
-                namespace: 'flux'
                 command: 'create'
-                arguments: ns flux
-
+                useConfigurationFile: true
+                configurationType: 'inline'
+                inline: 'ns flux'
 
             - task: Kubernetes@1
               inputs:
