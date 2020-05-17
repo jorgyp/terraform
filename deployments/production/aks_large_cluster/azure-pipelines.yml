@@ -14,8 +14,6 @@ variables:
 - group: adoCredentials
 - name: source
   value: "../../../modules/aks/"
-- name: source_storage_container
-  value: "../../../modules/storage_container"
 - name: container_access_type
   value: "private"
 - name: environment 
@@ -48,7 +46,7 @@ variables:
 parameters:
 - name: terraform_task
   type: string
-  default: 'destroy'
+  default: 'deploy'
 
 resources:
   - repo: self
@@ -75,10 +73,6 @@ stages:
             sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${sourceStorageContainer}|$(source_storage_container)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
-            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
         - task: Bash@3 
           displayName: 'Terraform Init'

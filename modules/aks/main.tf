@@ -1,7 +1,10 @@
-resource "azurerm_storage_container" "example" {
-  name                  = var.storage_container_name
-  storage_account_name  = var.storage_account_name
-  container_access_type = var.container_access_type
+terraform {
+  backend "azurerm" {
+    resource_group_name       = var.aks_resource_group_name
+    storage_account_name      = var.storage_account_name
+    container_name            = var.storage_container_name
+    key                       = var.key
+  }
 }
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" { 

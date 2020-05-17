@@ -7,3 +7,4 @@ variable "aks_node_count" {}
 variable "aks_dns_prefix" {}
 variable "aks_admin_username" {}
 variable "aks_k8s_version" {}
+variable "storage_container_name" {}
