@@ -67,10 +67,13 @@ stages:
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
                 command: 'upgrade'
-                chartType: 'Name'
-                chartName: 'fluxcd/flux'
                 arguments: |
-                  -i flux fluxcd/flux
+                  -i flux fluxcd/flux \
+                  --set helmOperator.create=true \
+                  --set helmOperator.createCRD=false \
+                  --set git.url=$repo \
+                  --namespace flux \
+                  fluxcd/flux
 
 
             - task: Kubernetes@1
