@@ -45,7 +45,7 @@ stages:
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'kubernetes/resources/fluxcd.yml'
+                configuration: '$(Pipeline.Workspace)/kubernetes/resources/fluxcd.yml'
                 arguments: '-f'
 
             - task: Kubernetes@1
