@@ -6,7 +6,7 @@ variables:
 - name: environment
   value: "production"
 - name: source 
-  value: "../../../modules/backend_container"
+  value: "../../../modules/storage_container"
 - name: manifest_location
   value: "backend_container"
 
@@ -35,7 +35,7 @@ stages:
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$path"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$path"
             sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$path"
-            cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+            cat "$path"
         - task: Bash@3 
           displayName: 'Terraform Init'
           inputs:
