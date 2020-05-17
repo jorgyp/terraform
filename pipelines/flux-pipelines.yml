@@ -35,7 +35,7 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
-                ls ./
+                ls ../
 
                 
             - task: Kubernetes@1
