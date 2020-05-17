@@ -71,7 +71,7 @@ stages:
                 chartName: 'flux'
                 releaseName: 'fluxcd'
                 arguments: |
-                  --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
+                  flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
             - task: Kubernetes@1
               inputs:
