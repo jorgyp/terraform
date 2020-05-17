@@ -40,7 +40,7 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:    
         - script: |
-            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf")
+            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${environment}|$(environment)|g" "$manifest_file"
             sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$manifest_file"
             sed -i -e "s|\${location}|$(location)|g" "$manifest_file"

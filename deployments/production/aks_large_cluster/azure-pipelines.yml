@@ -60,7 +60,7 @@ stages:
         vmImage: 'ubuntu-latest'
       steps:
         - script: |
-            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf")
+            manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$manifest_file"
             sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
             sed -i -e "s|\${containerName}|$(container_name)|g" "$manifest_file"
