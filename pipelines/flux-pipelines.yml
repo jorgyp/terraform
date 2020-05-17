@@ -41,8 +41,8 @@ stages:
                 --namespace flux \
                 fluxcd/flux
                 sleep 60s
-
-    - deployment: install_flux 
+  - stage: key
+    - deployment: view public key 
       pool:
         vmImage: 'ubuntu-latest'
       environment: install_flux
