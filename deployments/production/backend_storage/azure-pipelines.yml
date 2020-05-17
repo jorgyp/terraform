@@ -25,6 +25,10 @@ variables:
   value: "../../../modules/resource_group"
 - name: source_storage_account
   value: "../../../modules/storage_account"
+- name: storage_container_name
+  value: "statecontainer"
+- name: container_access_type
+  value: "private"
 
 parameters:
   - name: terraform_task
