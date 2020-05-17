@@ -17,4 +17,8 @@ module "storage_account" {
     location                  = "${location}"
     account_tier              = "${accountTier}"
     account_replication_type  = "${accountReplicationType}"
+    source_container          = "${sourceStorageContainer}"
+    storage_container_name    = "${storageContainerName}"
+    storage_account_name      = "${storageAccountName}"
+    container_access_type     = "${containerAccessType}"
 }
