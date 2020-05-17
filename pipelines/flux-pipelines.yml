@@ -39,9 +39,10 @@ stages:
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 namespace: 'flux'
                 command: 'apply'
-                arguments: '-f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
                 secretType: 'dockerRegistry'
-                containerRegistryType: 'Azure Container Registry'
+                useConfigurationFile: true
+                configuration: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
+
             - task: HelmInstaller@1
               inputs:
                 helmVersionToInstall: 'latest'
