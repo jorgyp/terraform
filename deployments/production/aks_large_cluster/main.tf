@@ -6,7 +6,7 @@ provider "azurerm" {
 
 module "aks" {
     source                    = "${source}"
-    resource_group_name       = "${aksResourceGroupName}"
+    aks_resource_group_name   = "${aksResourceGroupName}"
     storage_account_name      = "${storageAccountName}"
     storage_container_name    = "${storageContainerName}"
     key                       = "${key}"
