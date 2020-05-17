@@ -35,6 +35,7 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
+                sudo find / -type d -iname "kubernetes"
                 sudo apt install tree -y
                 tree $(Pipeline.Workspace)
                 echo "_*-_*-_*-_*-_*-"
