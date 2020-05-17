@@ -30,29 +30,42 @@ stages:
         runOnce:
           deploy:
             steps:
-            - script: |
-                az aks get-credentials --resource-group $(resourceGroup) --name $(clusterName)
-                kubectl apply -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
-                kubectl create ns flux
-                helm upgrade -i flux \
-                --set helmOperator.create=true \
-                --set helmOperator.createCRD=false \
-                --set git.url=$repo \
-                --namespace flux \
-                fluxcd/flux
-                sleep 60s
-  - stage: key
-    displayName: view public key
-    jobs:
-    - deployment: view_public_key 
-      pool:
-        vmImage: 'ubuntu-latest'
-      environment: install_flux
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - script: |
-                kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2
-                echo "copy this key to git repository settings"
-  
+            - task: KubectlInstaller@0
+              inputs:
+                kubectlVersion: 'latest'
+            - task: Kubernetes@1
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'apply'
+                arguments: '-f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
+                secretType: 'dockerRegistry'
+                containerRegistryType: 'Azure Container Registry'
+            - task: HelmInstaller@1
+              inputs:
+                helmVersionToInstall: 'latest'
+            - task: HelmDeploy@0
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceConnection: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'upgrade'
+                chartType: 'Name'
+                chartName: 'flux'
+                arguments: |
+                  --set helmOperator.create=true \
+                  --set helmOperator.createCRD=false \
+                  --set git.url=$repo \
+                  --namespace flux \
+                  fluxcd/flux            
+
+            - task: Kubernetes@1
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'logs'
+                arguments: 'deployment/flux | grep identity.pub | cut -d ''"'' -f2'
+                secretType: 'dockerRegistry'
+                containerRegistryType: 'Azure Container Registry'
