@@ -35,6 +35,16 @@ stages:
                 kubectlVersion: 'latest'
 
             - task: Kubernetes@1
+              displayName: create flux namespace
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'k8s manage prod'
+                namespace: 'flux'
+                command: 'create'
+                arguments: ns flux
+
+
+            - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
@@ -47,16 +57,22 @@ stages:
                 helmVersionToInstall: 'latest'
 
             - task: HelmDeploy@0
-              name: FluxCD
-              displayName: Install Flux CD
               inputs:
-                connectionType: 'None'
-                namespace: 'fluxcd'
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
                 command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd/flux'
-                releaseName: 'flux'
-                overrideValues: 'git.url=git@github.com:$(gitRepo),git.pollInterval=1m'
+                arguments: |
+                  -i flux \
+                  --set helmOperator.create=true \
+                  --set helmOperator.createCRD=false \
+                  --set git.url=$repo \
+                  --namespace flux \
+                  fluxcd/flux
 
             - task: Kubernetes@1
               inputs:
