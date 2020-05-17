@@ -20,7 +20,7 @@ variables:
 - name: account_replication_type
   value: "LRS"
 - name: manifest_location
-  value: "backend"
+  value: "backend_storage"
 - name: source_resource_group
   value: "../../../modules/resource_group"
 - name: source_storage_account

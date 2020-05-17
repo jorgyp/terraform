@@ -1,0 +1,65 @@
+trigger: none
+
+variables:
+#View adoCrednetials vars in ADO library
+- group: adoCredentials
+- name: environment
+  value: "production"
+- name: source 
+  value: "../../../modules/backend_container"
+- name: manifest_location
+  value: "backend_container"
+
+- name: storage_account_name
+  value: "aksaccountsyag"
+- name: storage_container_name
+  value: "statecontainer"
+- name: container_access_type
+  value: "private"
+parameters:
+  - name: terraform_task
+    type: string
+    default: 'deploy'
+
+stages: 
+  - stage: deploy
+    displayName: inject variables into manifest file (main.tf)
+    jobs:
+    - job: 
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:    
+        - script: |
+            path=$($(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf)
+            sed -i -e "s|\${sourceStorageContainer}|$(source_storage_container)|g" "$path"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$path"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$path"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$path"
+            cat "$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
+        - task: Bash@3 
+          displayName: 'Terraform Init'
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(manifest_location)'
+            script: 'terraform init'
+        - task: Bash@3 
+          displayName: 'Terraform Plan'
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(manifest_location)'
+            script: 'terraform plan'
+        - task: Bash@3 
+          displayName: 'Terraform Apply'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'deploy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(manifest_location)'
+            script: 'terraform apply -auto-approve'
+
+        - task: Bash@3 
+          displayName: 'Terraform Destroy'
+          condition: and(succeeded(), eq('${{ parameters.terraform_task }}', 'destroy'))
+          inputs:
+            targetType: inline
+            workingDirectory: 'deployments/$(environment)/$(manifest_location)'
+            script: 'terraform destroy -auto-approve'
