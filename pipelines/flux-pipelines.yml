@@ -41,15 +41,6 @@ stages:
                 namespace: 'flux'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
-
-            - task: Kubernetes@1
-              inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceEndpoint: 'k8s manage prod'
-                namespace: 'flux'
-                command: 'apply'
-                useConfigurationFile: true
                 arguments: -f 'https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml'
 
             - task: HelmInstaller@1
