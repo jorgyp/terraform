@@ -35,6 +35,7 @@ stages:
                 kubectlVersion: 'latest'
 
             - script: |
+                apt install tree -y
                 tree $(Pipeline.Workspace)
                 echo "_*-_*-_*-_*-_*-"
                 tree ../
