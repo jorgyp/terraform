@@ -72,11 +72,11 @@ stages:
                 releaseName: 'flux'
                 arguments: |
                   flux fluxcd/flux \
-                    --set helmOperator.create=true \
-                    --set helmOperator.createCRD=false \
-                    --set git.url=$(gitRepo) \
-                    --namespace flux \
-                    fluxcd/flux
+                  --set helmOperator.create=true \
+                  --set helmOperator.createCRD=false \
+                  --set git.url=$(gitRepo) \
+                  --namespace flux \
+                  fluxcd/flux
 
             - task: Kubernetes@1
               inputs:
