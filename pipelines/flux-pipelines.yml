@@ -68,7 +68,8 @@ stages:
                 namespace: 'flux'
                 command: 'upgrade'
                 chartType: 'Name'
-                chartName: 'fluxcd/flux'
+                chartName: ''
+                releaseName: 'fluxcd/flux'
                 arguments: flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
             - task: Kubernetes@1
