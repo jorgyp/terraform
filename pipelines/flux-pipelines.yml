@@ -38,7 +38,8 @@ stages:
                 ls
                 ls ..
                 ls s
-                ls s/*
+                ls $(Pipeline.Workspace)/s
+                ls $(Pipeline.Workspace)
 
                 
             - task: Kubernetes@1
