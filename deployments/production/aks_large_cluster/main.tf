@@ -4,6 +4,7 @@ provider "azurerm" {
 
 module "aks" {
     source                    = "${source}"
+    environment               = "${environment}"
     aks_resource_group_name   = "${aksResourceGroupName}"
     storage_account_name      = "${storageAccountName}"
     storage_container_name    = "${storageContainerName}"
