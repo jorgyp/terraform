@@ -42,6 +42,8 @@ stages:
                 fluxcd/flux
                 sleep 60s
   - stage: key
+    displayName: view public key
+    jobs:
     - deployment: view_public_key 
       pool:
         vmImage: 'ubuntu-latest'
