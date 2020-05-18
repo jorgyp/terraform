@@ -67,7 +67,7 @@ stages:
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
-                command: 'upgrade'
+                command: 'uninstall'
                 chartType: 'Name'
                 chartName: 'cert-manager'
                 releaseName: 'cert-manager'
@@ -83,8 +83,8 @@ stages:
                 namespace: 'flux'
                 command: 'upgrade'
                 chartType: 'Name'
-                chartName: 'fluxcd/flux'
-                releaseName: 'flux'
+                chartName: 'flux'
+                releaseName: 'fluxcd/flux'
                 overrideValues: 'webhook.enabled=false'
                 arguments: --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
