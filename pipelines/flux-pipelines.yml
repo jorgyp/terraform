@@ -60,13 +60,6 @@ stages:
               inputs:
                 helmVersionToInstall: 'latest'
 
-            - task: PowerShell@2
-              displayName: 'Manual Install terraform repo'
-              inputs:
-                targetType: 'inline'
-                script: 'helm repo update'
-
-
             - task: HelmDeploy@0
               inputs:
                 connectionType: 'Azure Resource Manager'
