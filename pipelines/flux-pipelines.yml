@@ -69,7 +69,7 @@ stages:
                 command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd/flux'
-                releaseName: 'fluxcd'
+                releaseName: 'flux'
                 overrideValues: 'webhook.enabled=false'
                 arguments: --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
