@@ -61,7 +61,7 @@ stages:
 
             - task: helm@1
               inputs:
-                subCommand: 'upgrade'
+                subCommand: 'helm upgrade'
                 arguments: '--namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git fluxcd/flux'
 
             - task: Kubernetes@1
