@@ -12,6 +12,8 @@ variables:
   value: 'aksrg'
 - name: clusterName
   value: 'aks-production-manage'
+- name: nameSpace
+  value: flux
 
 parameters:
 - name: terraform_task
@@ -31,7 +33,7 @@ stages:
           deploy:
             steps:
 
-- task: PowerShell@2
+            - task: PowerShell@2
               displayName: 'Install terraform repo'
               inputs:
                 targetType: 'inline'
@@ -48,14 +50,14 @@ stages:
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'terraform/kubernetes/resources/fluxcd.yml'
+                configuration: 'terraform/kubernetes/resources/namespaces/fluxcd.yml'
 
             - task: Kubernetes@1
               displayName: Create flux CRD
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
-                namespace: 'flux'
+                namespace: '$(nameSpace)'
                 command: 'apply'
                 arguments: -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
 
@@ -80,7 +82,7 @@ stages:
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
-                namespace: 'flux'
+                namespace: '$(nameSpace)'
                 updatedependency: true
                 command: 'upgrade'
                 chartType: 'Name'
@@ -102,6 +104,6 @@ stages:
                 azureSubscriptionEndpoint: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
-                namespace: 'flux'
+                namespace: '$(nameSpace)'
                 command: 'logs'
                 arguments: 'deployment/flux'
