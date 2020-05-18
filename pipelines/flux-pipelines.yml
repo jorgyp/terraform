@@ -22,7 +22,7 @@ parameters:
 
 stages:
   - stage: deploy
-    displayName: inject variables into manifest file (main.tf)
+    displayName: 'inject variables into manifest file (main.tf)'
     jobs:
     - deployment: install_flux 
       pool:
@@ -44,7 +44,7 @@ stages:
                 kubectlVersion: 'latest'
                 
             - task: Kubernetes@1
-              displayName: Create new namespace
+              displayName: 'Create new namespace'
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
@@ -53,7 +53,7 @@ stages:
                 configuration: 'terraform/kubernetes/resources/namespaces/fluxcd.yml'
 
             - task: Kubernetes@1
-              displayName: Create flux CRD
+              displayName: 'Create flux CRD'
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
@@ -66,7 +66,7 @@ stages:
                 helmVersionToInstall: 'latest'
 
             - task: AzureCLI@1
-              displayName: Update helm repo
+              displayName: 'Update helm repo'
               inputs:
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 scriptLocation: 'inlineScript'
@@ -76,7 +76,7 @@ stages:
                   helm repo update
 
             - task: HelmDeploy@0
-              display: Deploy flux
+              display: 'Deploy flux'
               inputs:
                 connectionType: 'Azure Resource Manager'
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
@@ -98,7 +98,7 @@ stages:
                 script: 'Start-Sleep -s 60'
 
             - task: Kubernetes@1
-              displayName: RSA key
+              displayName: 'RSA key'
               inputs:
                 connectionType: 'Azure Resource Manager'
                 azureSubscriptionEndpoint: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
