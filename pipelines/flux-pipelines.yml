@@ -84,7 +84,9 @@ stages:
                 command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd/flux'
-                arguments: flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
+                releaseName: 'fluxcd/flux'
+                overrideValues: 'webhook.enabled=false'
+                arguments: --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
             - task: Kubernetes@1
               inputs:
