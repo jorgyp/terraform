@@ -50,7 +50,7 @@ stages:
                 kubernetesServiceEndpoint: 'k8s manage prod'
                 command: 'apply'
                 useConfigurationFile: true
-                configuration: 'terraform/kubernetes/resources/namespaces/fluxcd.yml'
+                configuration: 'terraform/kubernetes/resources/namespaces/flux-flux-ns.yml'
 
             - task: Kubernetes@1
               displayName: 'Create flux CRD'
