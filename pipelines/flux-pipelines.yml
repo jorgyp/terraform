@@ -95,4 +95,4 @@ stages:
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
                 command: 'logs'
-                arguments: 'deployment/flux --all-containers=true | grep identity.pub'
+                arguments: '-l app=flux | grep identity.pub'
