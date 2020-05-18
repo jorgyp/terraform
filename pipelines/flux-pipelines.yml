@@ -59,12 +59,18 @@ stages:
               inputs:
                 helmVersionToInstall: 'latest'
 
-            - task: PowerShell@2
-              displayName: 'Manual run of operator install'
+            - task: HelmDeploy@0
               inputs:
-                targetType: 'inline'
-                script: helm upgrade --namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git fluxcd/flux
-
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
+                command: 'upgrade'
+                chartType: 'Name'
+                chartName: 'fluxcd/flux'
+                releaseName: ' '
+                arguments: flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
             - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'
