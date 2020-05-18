@@ -41,6 +41,7 @@ stages:
                 kubectlVersion: 'latest'
                 
             - task: Kubernetes@1
+              displayName: create new namespace if exists
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
@@ -49,6 +50,7 @@ stages:
                 configuration: 'terraform/kubernetes/resources/fluxcd.yml'
 
             - task: Kubernetes@1
+              displayName: create flux custom resource
               inputs:
                 connectionType: 'Kubernetes Service Connection'
                 kubernetesServiceEndpoint: 'k8s manage prod'
@@ -61,6 +63,7 @@ stages:
                 helmVersionToInstall: 'latest'
 
             - task: AzureCLI@1
+              displayName: update help repo
               inputs:
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 scriptLocation: 'inlineScript'
@@ -86,8 +89,9 @@ stages:
 
             - task: Kubernetes@1
               inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceEndpoint: 'k8s manage prod'
+                connectionType: 'Azure Resource Manager'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
                 command: 'logs'
                 arguments: 'deployment/flux | grep identity.pub | cut -d ''"'' -f2'
