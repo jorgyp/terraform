@@ -40,4 +40,4 @@ stages:
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
                 command: 'logs'
-                arguments: '-l app=flux | grep identity.pub'
+                arguments: 'flux-54c7699b77-t59fp | grep identity.pub'
