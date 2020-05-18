@@ -1,6 +1,6 @@
 ## Reusable Terraform
 
-> This repo provides an approach to performing multi-environment infrastructure provisioning by  using reusable Terraform modules.
+> This repo provides an approach to performing multi-environment infrastructure provisioning by  using reusable Terraform modules in the context of a kubernetes centric infrastructure. 
 
 ## Table of Contents
 
