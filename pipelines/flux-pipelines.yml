@@ -65,13 +65,8 @@ stages:
                 azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
-                namespace: 'flux'
                 command: 'upgrade'
-                chartType: 'Name'
-                chartName: 'null'
-                releaseName: 'fluxcd/flux'
-                arguments: flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
-
+                arguments: --namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git fluxcd/flux
             - task: Kubernetes@1
               inputs:
                 connectionType: 'Kubernetes Service Connection'
