@@ -63,7 +63,7 @@ stages:
               displayName: 'Manual run of operator install'
               inputs:
                 targetType: 'inline'
-                script: helm upgrade --namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git --chartname fluxcd/flux
+                script: helm upgrade --namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git fluxcd/flux
 
             - task: Kubernetes@1
               inputs:
