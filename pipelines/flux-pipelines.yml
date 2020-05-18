@@ -87,9 +87,11 @@ stages:
                 overrideValues: 'webhook.enabled=false'
                 arguments: --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
-            - task: Delay@1
+            - task: PowerShell@2
+              displayName: 'sleep'
               inputs:
-                delayForMinutes: '1' 
+                targetType: 'inline'
+                script: 'Start-Sleep -s 60'
                 
             - task: Kubernetes@1
               inputs:
@@ -97,5 +99,6 @@ stages:
                 azureSubscriptionEndpoint: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
                 command: 'logs'
-                arguments: '-n flux deployment/flux --all-containers=true | grep identity.pub'
+                arguments: '-l app=flux | grep identity.pub'
