@@ -60,6 +60,15 @@ stages:
               inputs:
                 helmVersionToInstall: 'latest'
 
+            - task: AzureCLI@1
+              inputs:
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+                  helm repo add fluxcd https://charts.fluxcd.io
+                  helm repo update
+
             - task: HelmDeploy@0
               inputs:
                 connectionType: 'Azure Resource Manager'
