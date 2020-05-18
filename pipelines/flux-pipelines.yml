@@ -65,7 +65,8 @@ stages:
               inputs:
                 targetType: 'inline'
                 script: 'helm repo update'
-                
+
+
             - task: HelmDeploy@0
               inputs:
                 connectionType: 'Azure Resource Manager'
@@ -73,6 +74,7 @@ stages:
                 azureResourceGroup: 'aksrg'
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
+                updatedependency: true
                 command: 'upgrade'
                 chartType: 'Name'
                 chartName: 'fluxcd/flux'
