@@ -59,10 +59,32 @@ stages:
               inputs:
                 helmVersionToInstall: 'latest'
 
-            - task: helm@1
+            - task: HelmDeploy@0
+              displayName: Install Cert Manager
               inputs:
-                subCommand: 'helm upgrade'
-                arguments: '--namespace flux --install --wait flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=git@github.com:jorgyp/test_api.git fluxcd/flux'
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
+                command: 'upgrade'
+                chartType: 'Name'
+                chartName: 'cert-manager'
+                releaseName: 'cert-manager'
+                overrideValues: 'webhook.enabled=false'
+                arguments: '--version v0.12.0 --repo https://charts.jetstack.io'
+
+            - task: HelmDeploy@0
+              inputs:
+                connectionType: 'Azure Resource Manager'
+                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
+                azureResourceGroup: 'aksrg'
+                kubernetesCluster: 'aks-production-manage'
+                namespace: 'flux'
+                command: 'upgrade'
+                chartType: 'Name'
+                chartName: 'fluxcd/flux'
+                arguments: flux --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
 
             - task: Kubernetes@1
               inputs:
