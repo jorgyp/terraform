@@ -30,68 +30,7 @@ stages:
         runOnce:
           deploy:
             steps:
-            - task: PowerShell@2
-              displayName: 'Manual Install terraform repo'
-              inputs:
-                targetType: 'inline'
-                script: 'git clone https://github.com/jorgyp/terraform.git'
-
-            - task: KubectlInstaller@0
-              inputs:
-                kubectlVersion: 'latest'
-                
-            - task: Kubernetes@1
-              displayName: create new namespace if exists
-              inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceEndpoint: 'k8s manage prod'
-                command: 'apply'
-                useConfigurationFile: true
-                configuration: 'terraform/kubernetes/resources/fluxcd.yml'
-
-            - task: Kubernetes@1
-              displayName: create flux custom resource
-              inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceEndpoint: 'k8s manage prod'
-                namespace: 'flux'
-                command: 'apply'
-                arguments: -f https://raw.githubusercontent.com/fluxcd/flux/helm-0.10.1/deploy-helm/flux-helm-release-crd.yaml
-
-            - task: HelmInstaller@1
-              inputs:
-                helmVersionToInstall: 'latest'
-
-            - task: AzureCLI@1
-              displayName: update help repo
-              inputs:
-                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
-                scriptLocation: 'inlineScript'
-                inlineScript: |
-                  helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-                  helm repo add fluxcd https://charts.fluxcd.io
-                  helm repo update
-
-            - task: HelmDeploy@0
-              inputs:
-                connectionType: 'Azure Resource Manager'
-                azureSubscription: 'my main subscription(5f549d28-a506-4f2f-b44a-6b609a01e13f)'
-                azureResourceGroup: 'aksrg'
-                kubernetesCluster: 'aks-production-manage'
-                namespace: 'flux'
-                updatedependency: true
-                command: 'upgrade'
-                chartType: 'Name'
-                chartName: 'fluxcd/flux'
-                releaseName: 'flux'
-                overrideValues: 'webhook.enabled=false'
-                arguments: --set helmOperator.create=true --set helmOperator.createCRD=false --set git.url=$(gitRepo)
-
-            - task: PowerShell@2
-              displayName: 'sleep'
-              inputs:
-                targetType: 'inline'
-                script: 'Start-Sleep -s 60'
+            
                 
             - task: Kubernetes@1
               inputs:
