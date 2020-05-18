@@ -8,8 +8,9 @@
 - [Usecase](#usecase)
 - [Folder_structure](#folder_structure)
 - [First_launch](#first_launch)
-- [Reuse_code](#Reuse_code)
-- [GitOps](#gitops)
+- [Reuse_code](#reuse_code)
+- [Azure_pipelines](#azure_pipelines)
+- [GitOps_flux](#gitops_flux)
 
 ## Prerequisites
 >
@@ -96,7 +97,7 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 ## Azure_pipelines  
 ><b>Background:</b> Azure-pipelines.yml live along side the manifest main.tf file located in deployments/$(environment)/infrastructure_component. Azure-pipeline.yml's inject the variables into the manifest file during the build proccess instead of hard-coding the values into manifest files itself. 
 
-## GitOps with flux
+## GitOps_flux
 
 ><b>Background:</b> Launch infrastructure, config management, and k8s deployments by utilizing pull technology tools (terradiff, kubediff, and ansiblediff) instead of push code to cluster. To learn why this is a cool check out: <url> https://www.weave.works/technologies/gitops/ </url><br>
 
