@@ -95,4 +95,4 @@ stages:
                 kubernetesCluster: 'aks-production-manage'
                 namespace: 'flux'
                 command: 'logs'
-                arguments: 'deployment/flux | grep identity.pub | cut -d ''"'' -f2'
+                arguments: 'deployment/flux | grep identity.pub'
