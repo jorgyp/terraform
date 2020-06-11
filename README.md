@@ -1,6 +1,6 @@
 ## Reusable Terraform
 
-> This repo provides an approach to performing multi-environment infrastructure provisioning by  using reusable Terraform modules.
+> This repo provides an approach to performing multi-environment infrastructure provisioning by  using reusable Terraform modules in the context of a kubernetes centric infrastructure. 
 
 ## Table of Contents
 
@@ -8,14 +8,19 @@
 - [Usecase](#usecase)
 - [Folder_structure](#folder_structure)
 - [First_launch](#first_launch)
-- [Reuse_code](#Reuse_code)
-- [GitOps](#gitops)
+- [Reuse_code](#reuse_code)
+- [Azure_pipelines](#azure_pipelines)
+- [GitOps_flux](#gitops_flux)
 
 ## Prerequisites
 >
-- Azure cli
+- Azure account 
+- Azure cli (locally)
 - Terraform 1.12.0+
-- Helm 3+ on workstation
+- Helm 3+
+- Azure account with subscription
+- Permissions to create resources under subscription
+- AzureDevops for pipeline deployment
 
 ## Usecase
 
@@ -89,7 +94,10 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 2. Adjust the environment/develop/dev_aks_large_cluster/main.tf values to match your dev cluster (IMPORTANT NOTE: make sure the "key" value for tfstate is ALWAYS UNIQUE). 
 3. terraform init && terraform plan && terraform apply -auto-approve
 
-## GitOps
+## Azure_pipelines  
+><b>Background:</b> Azure-pipelines.yml live along side the manifest main.tf file located in deployments/$(environment)/infrastructure_component. Azure-pipeline.yml's inject the variables into the manifest file during the build proccess instead of hard-coding the values into manifest files itself. 
+
+## GitOps_flux
 
 ><b>Background:</b> Launch infrastructure, config management, and k8s deployments by utilizing pull technology tools (terradiff, kubediff, and ansiblediff) instead of push code to cluster. To learn why this is a cool check out: <url> https://www.weave.works/technologies/gitops/ </url><br>
 
@@ -100,4 +108,12 @@ $ terraform init && terraform plan && terraform apply -auto-approve
 
 Full instructions here: https://eksworkshop.com/weave_flux/
 
+><b>Scenario:</b> You don't want to manually run scripts to deploy flux and want to officially deploy fluxcd via AzureDevops.
 
+1. Create a new pipeline within Azure Devops.
+2. Create Library called adoCredentials in AzureDevops and add variables ARM_CLIENT_ID, ARM_CLIENT_SECRET, ARM_SUBSCRIPTION_ID, ARM_TENANT_ID with values. Resourece: https://docs.microsoft.com/en-us/azure/developer/terraform/install-configure You can also store adoCredential values in azure vault and call them via azure pipeline Library.
+3. Point new pipeline to flux pipeline: pipelines/flux-pipelines.yml
+4. Make sure that you change the "gitRepo" value in pipelines/flux-pipelines.yml to your git repo.
+5. After completing the deployment of flux via AzureDevops, copy the public RSA key (displayed in "RSA key" pipeline step) to your app's repository ( settings > Deploy keys > Add deploy key ) with write access.
+
+Note: Flux checks changes in docker registry if there is a change it pushes commit to github that change has be noticed and reconciliation of k8s state and latest docker image occurs. 
