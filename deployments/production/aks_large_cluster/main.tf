@@ -22,6 +22,7 @@ module "aks" {
     aks_admin_username        = "${aksAdminUsername}"
     azure_client_id           = "${azureClientId}"
     azure_client_secret       = "${azureClientSecret}"
+    aks_resource_group_name   = "${aksResourceGroupName}"
 }
 
 output "kube_config_prod" {
