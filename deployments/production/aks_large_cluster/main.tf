@@ -2,13 +2,18 @@ provider "azurerm" {
   version = "=1.36.1"
 }
 
+  terraform {
+    backend "azurerm" {
+      resource_group_name       = "aksrg"
+      storage_account_name      = "aksaccountsyag"
+      container_name            = "statecontainer"
+      key                       = "aksprod"
+    }
+  }
+
 module "aks" {
     source                    = "${source}"
     environment               = "${environment}"
-    aks_resource_group_name   = "${aksResourceGroupName}"
-    storage_account_name      = "${storageAccountName}"
-    storage_container_name    = "${storageContainerName}"
-    key                       = "${key}"
     aks_k8s_version           = "${aksK8sVersion}"
     aks_location              = "${aksLocation}"
     aks_cluster_name          = "${aksClusterName}"

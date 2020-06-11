@@ -1,49 +1,38 @@
 resources:
   - repo: self
 
-trigger:
-  branches:
-    include:
-    - master
-  paths:
-    include:
-    - deployments/production/prod_aks_large_cluster/azure-pipelines.yml
-    exclude:
-    - readme.md
-    - .gitignore
+trigger: none
 
 variables:
 #View adoCrednetials vars in ADO library
 - group: adoCredentials
-- name: environment 
+- name: environment
   value: "production"
-- name: source
-  value: "../../../modules/aks/"
-- name: aks_admin_username
-  value: "sergeyago"
-- name: aks_dns_prefix
-  value: aks-production-manage
-- name: aks_cluster_name
-  value: "aks-production-manage"
-- name: aks_k8s_version
-  value: "1.16.7"
-- name: aks_location
-  value: "West US 2" 
-- name: aks_node_count
-  value: 2
-- name: aks_resource_group_name
-  value: "aksrg"
+- name: source_backend_storage
+  value: "../../../modules/backend_storage"
+- name: account_tier
+  value: "Standard"
+- name: account_replication_type
+  value: "LRS"
 - name: container_access_type
   value: "private"
-- name: container_name
-  value: "statecontainer"
+- name: location
+  value: "West US 2"
 - name: manifest_location
-  value: "aks_large_cluster"
+  value: "backend_storage"
+- name: resource_group_name
+  value: "aksrg"
+- name: storage_account_name
+  value: "aksaccountsyag"
+- name: storage_service
+  value: "aksstorageservice"
+- name: storage_container_name
+  value: "statecontainer"
 
 parameters:
-- name: terraform_task
-  type: string
-  default: 'deploy'
+  - name: terraform_task
+    type: string
+    default: 'deploy'
 
 stages: 
   - stage: deploy
@@ -52,21 +41,22 @@ stages:
     - job: 
       pool:
         vmImage: 'ubuntu-latest'
-      steps:
+      steps:    
         - script: |
             manifest_file="$(Pipeline.Workspace)/s/deployments/$(environment)/$(manifest_location)/main.tf"
             sed -i -e "s|\${environment}|$(environment)|g" "$manifest_file"
-            sed -i -e "s|\${containerName}|$(container_name)|g" "$manifest_file"
-            sed -i -e "s|\${source}|$(source)|g" "$manifest_file"
-            sed -i -e "s|\${aksK8sVersion}|$(aks_k8s_version)|g" "$manifest_file"
-            sed -i -e "s|\${aksLocation}|$(aks_location)|g" "$manifest_file"
-            sed -i -e "s|\${aksResourceGroupName}|$(aks_resource_group_name)|g" "$manifest_file"
-            sed -i -e "s|\${aksClusterName}|$(aks_cluster_name)|g" "$manifest_file"
-            sed -i -e "s|\${aksNodeCount}|$(AKS_NODE_COUNT)|g" "$manifest_file"
-            sed -i -e "s|\${aksDnsPrefix}|$(aks_dns_prefix)|g" "$manifest_file"
-            sed -i -e "s|\${aksAdminUsername}|$(aks_admin_username)|g" "$manifest_file"
-            sed -i -e "s|\${azureClientId}|$(azureClientId)|g" "$manifest_file"
-            sed -i -e "s|\${azureClientSecret}|$(azureClientSecret)|g" "$manifest_file"
+            sed -i -e "s|\${resourceGroupName}|$(resource_group_name)|g" "$manifest_file"
+            sed -i -e "s|\${location}|$(location)|g" "$manifest_file"
+            sed -i -e "s|\${accountTier}|$(account_tier)|g" "$manifest_file"
+            sed -i -e "s|\${accountReplicationType}|$(account_replication_type)|g" "$manifest_file"
+            sed -i -e "s|\${storageService}|$(storage_service)|g" "$manifest_file"
+            sed -i -e "s|\${blobName}|$(blob_name)|g" "$manifest_file"
+            sed -i -e "s|\${blobType}|$(blob_type)|g" "$manifest_file"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
+            sed -i -e "s|\${sourceBackendStorage}|$(source_backend_storage)|g" "$manifest_file"
+            sed -i -e "s|\${storageContainerName}|$(storage_container_name)|g" "$manifest_file"
+            sed -i -e "s|\${storageAccountName}|$(storage_account_name)|g" "$manifest_file"
+            sed -i -e "s|\${containerAccessType}|$(container_access_type)|g" "$manifest_file"
             cat "$manifest_file"
         - task: Bash@3 
           displayName: 'Terraform Init'

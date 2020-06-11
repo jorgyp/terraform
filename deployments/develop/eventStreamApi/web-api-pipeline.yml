@@ -1,0 +1,210 @@
+resources:
+- repo: self
+  
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - readme.md
+    - .gitignore
+    
+variables:
+- name: AllProjectPaths
+  value: '**/*.csproj'
+- name: ArtifactName
+  value: 'drop'
+- name: BuildConfiguration
+  value: release  
+- name: DotNetSdkVersion
+  value: '3.1.100'
+- name: BuildImageName
+  value: 'ubuntu-latest'
+- name: DeployImageName
+  value: 'windows-2019'
+- name: NugetVersion
+  value: '5.5.1'
+- name: projectSolution
+  value: 'DisruptionsCenterService.sln'
+- name: publishProjectName
+  value: '**/DisruptionsCenterService.csproj'
+- name: TestProjectPaths 
+  value: '**/*Tests/*.csproj'
+- name: ENVIRONMENT_TEST
+  value: DisruptionsCenter-TEST
+- name: ENVIRONMENT_QA
+  value: DisruptionsCenter-QA
+- name: ENVIRONMENT_PROD
+  value: DisruptionsCenter-PROD
+  
+stages:
+- stage: DisruptionsCenterService_build
+  displayName: 'Build'
+  jobs:
+  - job: build
+    displayName: Build and test
+    pool:
+      vmImage: $(BuildImageName)
+    steps:
+    - task: NuGetToolInstaller@1
+      displayName: 'Use NuGet 5.5.1'
+      inputs:
+        versionSpec: $(NugetVersion)
+    - task: UseDotNet@2
+      displayName: 'Set up .NET Core SDK'
+      inputs:
+        version: $(DotNetSdkVersion)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet restore'
+      inputs:
+        command: restore
+        projects: $(projectSolution) 
+        vstsFeed: 'c005f067-8dd6-49a9-a11f-6ac99ea93a22'   
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build project'
+      inputs:
+        projects: $(AllProjectPaths)
+        arguments: '--output publish_output --configuration $(BuildConfiguration)'
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        projects: $(TestProjectPaths)
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet Publish Artifact'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: $(publishProjectName)
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: $(ArtifactName)
+
+
+- stage: DisruptionsCenterService_Deploy_TEST
+  condition: succeeded()
+  displayName: 'Deploy to TEST'
+  jobs:
+  - deployment: Deploy_TEST
+    displayName: Deploy Test
+    pool:
+      vmImage: $(DeployImageName)
+    environment: '$(ENVIRONMENT_TEST)'
+    strategy:
+        runOnce:
+          deploy:
+            steps: 
+            - task: DownloadBuildArtifacts@0
+              displayName: 'Download artifact'
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: '$(ArtifactName)'
+                downloadPath: '$(System.DefaultWorkingDirectory)'
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy to test'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'disruptionscenter-test-group-SPN'
+                appType: 'functionApp'
+                WebAppName: 'disruptionscenter-test-func-westus2'
+                packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                TakeAppOfflineFlag: false
+
+- stage: DisruptionsCenterService_Deploy_QA
+  condition: succeeded()
+  displayName: 'Deploy to QA'
+  jobs:
+  - deployment: Deploy_QA
+    displayName: Deploy QA
+    pool:
+      vmImage: $(DeployImageName)
+    environment: '$(ENVIRONMENT_QA)'
+    strategy:
+        runOnce:
+          deploy:
+            steps: 
+            - task: DownloadBuildArtifacts@0
+              displayName: 'Download artifact'
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: '$(ArtifactName)'
+                downloadPath: '$(System.DefaultWorkingDirectory)'
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy to qa (westus2)'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'disruptionscenter-qa-group-SPN'
+                appType: 'functionApp'
+                WebAppName: 'disruptionscenter-qa-func-westus2'
+                packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                TakeAppOfflineFlag: false
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy to qa (westcentralus)'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'disruptionscenter-qa-group-SPN'
+                appType: 'functionApp'
+                WebAppName: 'disruptionscenter-qa-func-westcentralus'
+                packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                TakeAppOfflineFlag: false
+
+- stage: DisruptionsCenterService_Deploy_PROD
+  condition: succeeded()
+  displayName: 'Deploy to PROD'
+  jobs:
+  - deployment: Deploy_PROD
+    displayName: Deploy PROD
+    pool:
+      vmImage: $(DeployImageName)
+    environment: '$(ENVIRONMENT_PROD)'
+    strategy:
+        runOnce:
+          deploy:
+            steps: 
+            - task: DownloadBuildArtifacts@0
+              displayName: 'Download artifact'
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: '$(ArtifactName)'
+                downloadPath: '$(System.DefaultWorkingDirectory)'
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy to prod (westus2)'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'disruptionscenter-qa-group-SPN'
+                appType: 'functionApp'
+                WebAppName: 'disruptionscenter-prod-func-westus2'
+                packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                TakeAppOfflineFlag: false
+            - task: AzureRmWebAppDeployment@4
+              displayName: 'Deploy to prod (westcentralus)'
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'disruptionscenter-qa-group-SPN'
+                appType: 'functionApp'
+                WebAppName: 'disruptionscenter-prod-func-westcentralus'
+                packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                enableCustomDeployment: true
+                DeploymentType: 'webDeploy'
+                TakeAppOfflineFlag: false
