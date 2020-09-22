@@ -30,7 +30,7 @@ variables:
 - name: aks_location
   value: "West US 2" 
 - name: aks_node_count
-  value: 2
+  value: 1
 - name: aks_resource_group_name
   value: "aksrg"
 - name: container_access_type
