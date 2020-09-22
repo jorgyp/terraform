@@ -7,7 +7,7 @@ trigger:
     - master
   paths:
     include:
-    - deployments/production/remote_aks_cluster_1/azure-pipelines.yml
+    - deployments/production/istio_control_plane_cluster/azure-pipelines.yml
     exclude:
     - readme.md
     - .gitignore
