@@ -7,7 +7,7 @@ trigger:
     - master
   paths:
     include:
-    - deployments/production/prod_aks_large_cluster/azure-pipelines.yml
+    - deployments/production/remote_aks_cluster_1/azure-pipelines.yml
     exclude:
     - readme.md
     - .gitignore
@@ -22,9 +22,9 @@ variables:
 - name: aks_admin_username
   value: "sergeyago"
 - name: aks_dns_prefix
-  value: aks-production-manage
+  value: "aks-remote-cluster-1"
 - name: aks_cluster_name
-  value: "aks-production-manage"
+  value: "aks-remote-cluster-1"
 - name: aks_k8s_version
   value: "1.17.9"
 - name: aks_location
@@ -38,7 +38,7 @@ variables:
 - name: container_name
   value: "statecontainer"
 - name: manifest_location
-  value: "aks_large_cluster"
+  value: "remote_aks_cluster_2"
 
 parameters:
 - name: terraform_task
